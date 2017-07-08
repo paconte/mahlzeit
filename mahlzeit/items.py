@@ -12,10 +12,11 @@ from subprocess import call
 
 
 class MenuItem(scrapy.Item):
+    location = scrapy.Field()
+    business = scrapy.Field()
+    date = scrapy.Field()
     dish = scrapy.Field()
     price = scrapy.Field()
-    date = scrapy.Field()
-    business = scrapy.Field()
     ingredients = scrapy.Field()
 
 
@@ -36,10 +37,10 @@ def download_and_convert_to_text(response, dst_file):
     call(["rm", filename])
 
 
-def create_dish_for_week(business, dish, date, ingredients=list(), price=None):
+def create_dish_for_week(location, business, dish, date, ingredients=list(), price=None):
     result = list()
     for day in days:
-        item = MenuItem(business=business, dish=dish, date=get_date(date, day), ingredients=ingredients, price=price)
+        item = MenuItem(location=location, business=business, dish=dish, date=get_date(date, day), ingredients=ingredients, price=price)
         result.append(item)
     return result
 

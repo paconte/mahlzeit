@@ -6,7 +6,8 @@ from mahlzeit.items import days
 class AlbertSpider(scrapy.Spider):
     name = "albert"
     start_urls = ['http://www.albert-speisemanufaktur.de/speiseplan']
-    business = 'albert'
+    business = 'Albert'
+    location = 'Adlershof'
 
     def parse(self, response):
         result = list()
@@ -25,6 +26,7 @@ class AlbertSpider(scrapy.Spider):
                 item['price'] = row.xpath('text()').extract_first()[:-5].replace(',','.')
                 item['date'] = dish_date
                 item['business'] = self.business
+                item['location'] = self.location
                 result.append(item)
                 item = MenuItem()
         return result

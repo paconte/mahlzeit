@@ -23,12 +23,13 @@ def extract_ingredients(dish):
 class EWSpider(scrapy.Spider):
     name = "esswirtschaft"
     start_urls = ['http://www.esswirtschaft.de/wochenkarte/wochenkarte.html']
-    business = 'esswirtschaft'
+    business = 'Esswirtschaft'
+    location = 'Adlershof'
 
 
     def create_item(self, dish, date):
         dish_aux, ingredients = extract_ingredients(dish)
-        return MenuItem(dish=dish_aux, date=date, ingredients=ingredients, business=self.business)
+        return MenuItem(dish=dish_aux, date=date, ingredients=ingredients, location=self.location, business=self.business)
 
 
     def parse(self, response):
@@ -36,15 +37,15 @@ class EWSpider(scrapy.Spider):
         # wochengericht
         wochengericht = response.selector.xpath('//h2[1]//following-sibling::p[1]//text()').extract_first()
         wochengericht, ingredients = extract_ingredients(wochengericht)
-        result.extend(create_dish_for_week(self.business, wochengericht, get_monday_date(), ingredients))
+        result.extend(create_dish_for_week(self.location, self.business, wochengericht, get_monday_date(), ingredients))
         # wochensalat
         wochensalat = response.selector.xpath('//h2[2]//following-sibling::p[1]//text()').extract_first()
         wochensalat, ingredients = extract_ingredients(wochensalat)
-        result.extend(create_dish_for_week(self.business, wochensalat, get_monday_date(), ingredients))
+        result.extend(create_dish_for_week(self.location, self.business, wochensalat, get_monday_date(), ingredients))
         # salat im Glas
         salat_im_glas = response.selector.xpath('//h2[3]//following-sibling::p[1]//text()').extract_first()
         salat_im_glas, ingredients = extract_ingredients(salat_im_glas)
-        result.extend(create_dish_for_week(self.business, salat_im_glas, get_monday_date(), ingredients))
+        result.extend(create_dish_for_week(self.location, self.business, salat_im_glas, get_monday_date(), ingredients))
         # wochensuppen
         wochensuppe1 = response.selector.xpath('//h3//following-sibling::p[1]')[1].extract()[3:-4]
         wochensuppe1, ingredients = extract_ingredients(wochensuppe1)
@@ -52,9 +53,9 @@ class EWSpider(scrapy.Spider):
         wochensuppe2, ingredients = extract_ingredients(wochensuppe2)
         wochensuppe3 = response.selector.xpath('//h3//following-sibling::p[3]//text()').extract_first()
         wochensuppe3, ingredients = extract_ingredients(wochensuppe3)
-        result.extend(create_dish_for_week(self.business, wochensuppe1, get_monday_date(), ingredients))
-        result.extend(create_dish_for_week(self.business, wochensuppe2, get_monday_date(), ingredients))
-        result.extend(create_dish_for_week(self.business, wochensuppe3, get_monday_date(), ingredients))
+        result.extend(create_dish_for_week(self.location, self.business, wochensuppe1, get_monday_date(), ingredients))
+        result.extend(create_dish_for_week(self.location, self.business, wochensuppe2, get_monday_date(), ingredients))
+        result.extend(create_dish_for_week(self.location, self.business, wochensuppe3, get_monday_date(), ingredients))
 
         # montag
         monday = response.selector.xpath('//h2[4]//following-sibling::p[1]//text()').extract_first()

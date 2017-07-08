@@ -19,7 +19,7 @@ def _clean_dish_string(string):
     return string
 
 
-def _parse_weekday(business, text, idx1, idx2, weekday):
+def _parse_weekday(location, business, text, idx1, idx2, weekday):
     date = get_date_of_weekday(weekday)
     exp1 = re.compile(r'^Tagessuppe: ')
     exp2 = re.compile(r'^[0-9]{1}(\.)?[ – |– ]')
@@ -48,7 +48,7 @@ def _parse_weekday(business, text, idx1, idx2, weekday):
         raise KeyError('prices and dishes have different length')
     result = list()
     for d, p in zip(dishes, prices):
-        item = MenuItem(business=business, dish=d, price=p, date=date)
+        item = MenuItem(location=location ,business=business, dish=d, price=p, date=date)
         result.append(item)
     return result
 
@@ -56,7 +56,8 @@ def _parse_weekday(business, text, idx1, idx2, weekday):
 class SonnenscheinSpider(scrapy.Spider):
     name = "sonnenschein"
     start_urls = ['http://www.adlershof.de/fileadmin/user_upload/downloads/essen/sonnenschein.pdf']
-    business = 'sonnenschein'
+    business = 'Sonnenschein'
+    location = 'Adlershof'
 
     def find_line_index(day):
         idx = text.index('%s\n' % day)
@@ -74,5 +75,5 @@ class SonnenscheinSpider(scrapy.Spider):
                 except IndexError:
                     idx2 = len(text)
                 idx1 = text.index(days[i])
-                items = _parse_weekday(self.business, text, idx1, idx2, days[i][:-1])
+                items = _parse_weekday(self.location, self.business, text, idx1, idx2, days[i][:-1])
             return items
