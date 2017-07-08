@@ -16,6 +16,7 @@ class MenuItem(scrapy.Item):
     price = scrapy.Field()
     date = scrapy.Field()
     business = scrapy.Field()
+    ingredients = scrapy.Field()
 
 
 days = ['montag', 'dienstag', 'mittwoch', 'donnerstag', 'freitag']
