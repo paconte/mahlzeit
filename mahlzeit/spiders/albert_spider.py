@@ -17,6 +17,10 @@ class AlbertSpider(scrapy.Spider):
                 dish_date = get_date_of_weekday(row.xpath('text()').extract_first())
             elif (row.xpath('@data-title').extract_first() == 'Gericht'):
                 item['dish'] = row.xpath('text()').extract_first()
+                item['ingredients'] = list()
+                img_alt = row.xpath('.//img/@alt').extract_first()
+                if img_alt and img_alt.lower() == 'vegetarisch':
+                    item['ingredients'].append('vegetarian')
             elif (row.xpath('@data-title').extract_first() == 'Preis'):
                 item['price'] = row.xpath('text()').extract_first()[:-5].replace(',','.')
                 item['date'] = dish_date
