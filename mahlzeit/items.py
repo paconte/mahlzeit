@@ -36,10 +36,10 @@ def download_and_convert_to_text(response, dst_file):
     call(["rm", filename])
 
 
-def create_dish_for_week(business, dish, date, price=None):
+def create_dish_for_week(business, dish, date, ingredients=list(), price=None):
     result = list()
     for day in days:
-        item = MenuItem(business=business, dish=dish, date=get_date(date, day), price=price)
+        item = MenuItem(business=business, dish=dish, date=get_date(date, day), ingredients=ingredients, price=price)
         result.append(item)
     return result
 
