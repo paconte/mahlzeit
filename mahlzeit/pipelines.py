@@ -7,6 +7,7 @@
 import csv
 from scrapy.exporters import JsonItemExporter
 from scrapy.exporters import CsvItemExporter
+from scrapy.exporters import JsonLinesItemExporter
 from datetime import datetime
 
 
@@ -39,8 +40,10 @@ def clean_item_dish(dish):
 def clean_item_price(price):
     if price:
         result = price.replace(' ', '')
-        return result.replace('€', '')
-    return price
+        result = result.replace('€', '')
+    else:
+        result = ''
+    return result
 
 
 class JsonExportPipeline(object):
