@@ -13,7 +13,8 @@ BOT_NAME = 'mahlzeit'
 
 SPIDER_MODULES = ['mahlzeit.spiders']
 NEWSPIDER_MODULE = 'mahlzeit.spiders'
-#LOG_FILE = "logs/mahlzeit.log"
+LOG_FILE = "exports/log-mahlzeit.log"
+LOG_LEVEL = 'WARNING'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
