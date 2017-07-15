@@ -22,6 +22,8 @@ class SuppenCultSpider(scrapy.Spider):
                 dishes.pop(i)
             elif 'Unsere vegetarischen Suppen' in dishesAux[i]:
                 dishes.pop(i)
+            elif 'geschlossen' in dishesAux[i]:
+                dishes.pop(i)
 
         if len(names) != len(dishes) or len(names) != len(prices):
             raise KeyError('prices and dishes have different length')
