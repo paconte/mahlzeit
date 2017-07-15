@@ -20,7 +20,7 @@ class JouisNourSpider(CSVFeedSpider):
         types = types.split(',')
         ingredients = list()
         for t in types:
-            ingredients.append(t)
+            ingredients.append(t.replace(' ',''))
         # create item
         item = MenuItem()
         item['date'] = row['date']
