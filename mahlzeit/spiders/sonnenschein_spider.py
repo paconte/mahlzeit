@@ -73,11 +73,6 @@ def _parse_weekday(location, business, text, idx1, idx2, weekday):
             price = text[i][:-2].replace(',','.')
             prices.append(price)
     if len(prices) != len(dishes):
-        print(is_last_dish)
-        for d in dishes:
-            print(d)
-        for p in prices:
-            print(p)
         raise KeyError('prices and dishes have different length')
     ingredients = extract_ingredients(dishes)
     result = list()
@@ -110,6 +105,5 @@ class SonnenscheinSpider(scrapy.Spider):
                 except IndexError:
                     idx2 = len(text)
                 idx1 = text.index(days[i])
-                print(idx1, idx2, days[i][:-1])
-                items += _parse_weekday(self.location, self.business, text, idx1, idx2, days[i][:-1])
+
         return items
