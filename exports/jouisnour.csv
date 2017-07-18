@@ -1,4 +1,51 @@
-date;location;business;price;type;name
-14.7.2017;Adlershof;Jouis Nour;7.50;[bio];Puten-Tagliatelle mit Limettensauce und buntem Sommersalat
-14.7.2017;Adlershof;Jouis Nour;5.90;[bio,vegetarian];Gemüse-Paella á la Jouis Nour mit frischem Gemüse und Joghurt-Dip
-14.7.2017;Adlershof;Jouis Nour;4.00;[bio,vegetarian];Zucchinicremesuppe mit gerösteten Haferflocken
+14.7.2017;Adlershof;Jouis Nour;7.5;bio;Puten-Tagliatelle mit Limettensauce und buntem Sommersalat
+14.7.2017;Adlershof;Jouis Nour;5.9;bio, vegetarian;Gemüse-Paella á la Jouis Nour mit frischem Gemüse und Joghurt-Dip
+14.7.2017;Adlershof;Jouis Nour;4.5;bio, vegetarian;Zucchinicremesuppe mit gerösteten Haferflocken
+17.7.2017;Adlershof;Jouis Nour;7.5;bio;Gebratene Hähnchenkeule mit Backkartoffeln an Knackigem Krautsalat und Salsa-Dip
+17.7.2017;Adlershof;Jouis Nour;5.9;bio, vegetarian;Buntes Spirelli-Brokkoli-Gratin mit Grünkern und Tomatensauce
+17.7.2017;Adlershof;Jouis Nour;4.5;bio, vegetarian;Zucchinicremesuppe mit gerösteten Haferflocken
+18.7.2017;Adlershof;Jouis Nour;7.5;bio;Griechischer Hackfleisch-Auflauf mit Bohnen und Fetakäse an Kräauterquark
+18.7.2017;Adlershof;Jouis Nour;5.9;bio, vegetarian, vegan;Gemüse-Quinoa-Pfanne mit Naturreis und einer leichten Curry-Sauce
+18.7.2017;Adlershof;Jouis Nour;4;bio, vegetarian;Toskanische Zuppa del Contadino (Bauersuppe) m. Dinkel u. geriebene Käse
+19.7.2017;Adlershof;Jouis Nour;7.5;bio;Rinder-Rahmgeschnetzeltes mit Kartoffelpüree und Champignons
+19.7.2017;Adlershof;Jouis Nour;5.5;bio, vegetarian;Spagetthi mit Oliven, Peperoni, Käse und frischen Kräutern, dazu Salat
+19.7.2017;Adlershof;Jouis Nour;4.5;bio, vegetarian, vegan;Grüner Bohnen-Eintopf mit Sonnenblumenkernen
+20.7.2017;Adlershof;Jouis Nour;7.9;fish;Seelachs mit Rahmlinsen, bunten Reis und grüner Salat
+20.7.2017;Adlershof;Jouis Nour;5.9;bio, vegetarian;Kartoffel-Pfifferlingsauflauf mit Lauchstreifen und Kräaterkruste
+20.7.2017;Adlershof;Jouis Nour;4;bio, vegetarian;Kohlrabicreme-Suppe mit Schnittlauch
+21.7.2017;Adlershof;Jouis Nour;7;bio;Klopse “Königsberger Art” mit Rote Beete und Kartoffelpüree
+21.7.2017;Adlershof;Jouis Nour;5.5;bio, vegetarian;Bunte Gemüse-Schupfnudeln-Pfanne mit Pesto
+21.7.2017;Adlershof;Jouis Nour;4;bio, vegetarian, vegan;Blumenkohl-Süppchen mit gerösteten Haferflocken
+24.7.2017;Adlershof;Jouis Nour;7.5;bio;Schaschlik-Spieß mit ungarische, Letscho und Reis
+24.7.2017;Adlershof;Jouis Nour;5.9;bio, vegetarian;Gebackene Rosmarin-Ofenkartoffeln mit Ratatouille-Gemüse und Paprika Schmand
+24.7.2017;Adlershof;Jouis Nour;4;bio, vegetarian, vegan;Paprika-Mais Suppe mit Sonnenblumenkerne
+25.7.2017;Adlershof;Jouis Nour;7;bio;Bratwurst auf Weinsauerkraut mit Petersilienkartoffeln und Kräutersenfsauce
+25.7.2017;Adlershof;Jouis Nour;5.9;bio, vegetarian;Indische Gemüsepfanne mit Kichererbsenpüre und Joguhrt-Minz-Dip
+25.7.2017;Adlershof;Jouis Nour;4;bio, vegetarian;Champignon-Cremesuppe mit frischen Kräutern
+26.7.2017;Adlershof;Jouis Nour;7.5;bio;Hausgemachtes Leber-Ragout mit Apfel an Kartoffelpüree und gerösteten Zwiebeln
+26.7.2017;Adlershof;Jouis Nour;5.9;bio, vegetarian;Bandnudeln an Pfifferlingsrahm und Krischtomaten
+26.7.2017;Adlershof;Jouis Nour;4;bio, vegetarian;Berliner Kartoffelsuppe mit Kräuterschmand
+27.7.2017;Adlershof;Jouis Nour;7.9;fish;Schollenfilet gedünstet in Dillrahm mit Kartoffeln und Gurkensalat
+27.7.2017;Adlershof;Jouis Nour;5.9;bio, vegetarian;Mediterrane Gemüse-Lasagne mit einem Kräuter-Dip
+27.7.2017;Adlershof;Jouis Nour;4;bio, vegetarian;Tomatencremesuppe mit Käse-Croutons
+28.7.2017;Adlershof;Jouis Nour;7.5;bio;Brandenburger Schmorkohl mit Hackfleisch und Petersilienkartoffeln
+27.7.2017;Adlershof;Jouis Nour;6;bio, vegetarian, vegan;Farfalle mit Tomaten-Oliven-Sauce und frischen Kräutern
+27.7.2017;Adlershof;Jouis Nour;4;bio, vegetarian;Lauch-Rahmsüppchen mit Karotttenraspeln
+31.7.2017;Adlershof;Jouis Nour;7.5;bio;Schnitzel mit Pfifferlings-Waldpilz-Rahmsauce, Kartoffelstampf und Tomatensalat
+31.7.2017;Adlershof;Jouis Nour;5.5;bio, vegetarian, vegan;Spaghettimit Gemüsebolognese und Sonnenblumenkernen
+31.7.2017;Adlershof;Jouis Nour;4.5;bio, vegetarian, vegan;Feuriger Paprikatopf mit Tofustückchen
+17.7.2017;Adlershof;FOOD;5;vegetarian;Leckerer Rucola-Salat mit Champignon, Parmaschinken und Parmesan
+17.7.2017;Adlershof;FOOD;6;;Pasta der Woche: Spätzle mit Käse, Cherrytomaten und Bacon
+17.7.2017;Adlershof;FOOD;7;fish;Das „Mr. Tentacles“- Sandwich mit Oktopus, Karottenpüree, Sellerie und Dill
+18.7.2017;Adlershof;FOOD;5;vegetarian;Leckerer Rucola-Salat mit Champignon, Parmaschinken und Parmesan
+18.7.2017;Adlershof;FOOD;6;;Pasta der Woche: Spätzle mit Käse, Cherrytomaten und Bacon
+18.7.2017;Adlershof;FOOD;7;fish;Das „Mr. Tentacles“- Sandwich mit Oktopus, Karottenpüree, Sellerie und Dill
+19.7.2017;Adlershof;FOOD;5;vegetarian;Leckerer Rucola-Salat mit Champignon, Parmaschinken und Parmesan
+19.7.2017;Adlershof;FOOD;6;;Pasta der Woche: Spätzle mit Käse, Cherrytomaten und Bacon
+19.7.2017;Adlershof;FOOD;7;fish;Das „Mr. Tentacles“- Sandwich mit Oktopus, Karottenpüree, Sellerie und Dill
+20.7.2017;Adlershof;FOOD;5;vegetarian;Leckerer Rucola-Salat mit Champignon, Parmaschinken und Parmesan
+20.7.2017;Adlershof;FOOD;6;;Pasta der Woche: Spätzle mit Käse, Cherrytomaten und Bacon
+20.7.2017;Adlershof;FOOD;7;fish;Das „Mr. Tentacles“- Sandwich mit Oktopus, Karottenpüree, Sellerie und Dill
+21.7.2017;Adlershof;FOOD;5;vegetarian;Leckerer Rucola-Salat mit Champignon, Parmaschinken und Parmesan
+21.7.2017;Adlershof;FOOD;6;;Pasta der Woche: Spätzle mit Käse, Cherrytomaten und Bacon
+21.7.2017;Adlershof;FOOD;7;fish;Das „Mr. Tentacles“- Sandwich mit Oktopus, Karottenpüree, Sellerie und Dill
