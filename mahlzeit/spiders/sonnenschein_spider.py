@@ -42,7 +42,7 @@ def extract_ingredients(dishes):
     return result
 
 
-def _parse_weekday(location, business, text, idx1, idx2, weekday):
+def parse_weekday(location, business, text, idx1, idx2, weekday):
     date = get_date_of_weekday(weekday)
     exp1 = re.compile(r'^Tagessuppe: ')
     exp2 = re.compile(r'^[0-9]{1}(\.)?[ – |– ]')
@@ -105,5 +105,5 @@ class SonnenscheinSpider(scrapy.Spider):
                 except IndexError:
                     idx2 = len(text)
                 idx1 = text.index(days[i])
-
+                items += parse_weekday(self.location, self.business, text, idx1, idx2, days[i][:-1])
         return items
