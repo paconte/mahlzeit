@@ -14,6 +14,13 @@ from datetime import datetime
 pipeline_directory = './exports/'
 
 
+def capitalize_ingredients(ingredients):
+    result = list()
+    for ingr in ingredients:
+        result.append(ingr.capitalize())
+    return result
+
+
 def get_filename(type):
     date = datetime.today()
     if type == 'csv':
@@ -59,6 +66,7 @@ class JsonExportPipeline(object):
 
     def process_item(self, item, spider):
         item['dish'] = clean_item_dish(item['dish'])
+        item['ingredients'] = capitalize_ingredients(item['ingredients'])
         if 'price' in item:
             item['price'] = clean_item_price(item['price'])
         self.exporter.export_item(item)
@@ -78,6 +86,7 @@ class CsvExportPipeline(object):
 
     def process_item(self, item, spider):
         item['dish'] = clean_item_dish(item['dish'])
+        item['ingredients'] = capitalize_ingredients(item['ingredients'])
         if 'price' in item:
             item['price'] = clean_item_price(item['price'])
         self.exporter.export_item(item)
