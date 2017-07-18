@@ -15,12 +15,13 @@ class JouisNourSpider(CSVFeedSpider):
         if row['date'] == 'date' and row['location'] == 'location':
             return
         # extract ingredients
-        types = row['type'].replace('[', '')
-        types = types.replace(']', '')
+        types = row['type']
         types = types.split(',')
         ingredients = list()
         for t in types:
-            ingredients.append(t.replace(' ',''))
+            t = t.replace(' ','')
+            if len(t) > 1:
+                ingredients.append(t.replace(' ',''))
         # create item
         item = MenuItem()
         item['date'] = row['date']
