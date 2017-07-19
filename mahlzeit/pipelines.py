@@ -60,7 +60,6 @@ class JsonExportPipeline(object):
     def process_item(self, item, spider):
         item['dish'] = clean_item_dish(item['dish'])
         item.extract_ingredients()
-        item.capitalize_ingredients()
         if 'price' in item:
             item['price'] = clean_item_price(item['price'])
         self.exporter.export_item(item)
@@ -81,7 +80,6 @@ class CsvExportPipeline(object):
     def process_item(self, item, spider):
         item['dish'] = clean_item_dish(item['dish'])
         item.extract_ingredients()
-        item.capitalize_ingredients()
         if 'price' in item:
             item['price'] = clean_item_price(item['price'])
         self.exporter.export_item(item)

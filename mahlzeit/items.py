@@ -15,6 +15,7 @@ vegetarian_words = ['vegetarisch', 'vegan']
 vegan_words = ['vegan']
 fish_words = ['fisch', 'lachs', 'oktopus']
 soup_words = ['suppe', 'soljanka']
+dessert_words = ['milschreis', 'grießbrei', 'kirschen']
 
 
 class MenuItem(scrapy.Item):
@@ -34,6 +35,7 @@ class MenuItem(scrapy.Item):
     def extract_ingredients(self):
         result = set()
         dish_lower = self['dish'].lower()
+        # iterate words
         for word in vegetarian_words:
             if word in dish_lower:
                 result.add('vegetarian')
@@ -46,9 +48,15 @@ class MenuItem(scrapy.Item):
         for word in soup_words:
             if word in dish_lower:
                 result.add('soup')
+        for word in dessert_words:
+            if word in dish_lower:
+                result.add('dessert')
+        # add old ingredients
         for ing in self['ingredients']:
             result.add(ing.lower())
+        # set new ingredients
         self['ingredients'] = list(result)
+        self.capitalize_ingredients()
 
 
 days = ['montag', 'dienstag', 'mittwoch', 'donnerstag', 'freitag']
