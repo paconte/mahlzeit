@@ -12,18 +12,23 @@ class SuppenCultSpider(scrapy.Spider):
     def parse(self, response):
         names = response.xpath('//div[@class="suppe_name"]/text()').extract()
         prices = response.xpath('//div[@class="suppe_preis"]/text()').extract()
-        dishesAux = response.xpath('//div[@class="suppe_zutaten"]/text()').extract()
-        dishes = list(dishesAux)
+        dishes = response.xpath('//div[@class="suppe_zutaten"]/text()').extract()
         #vegetarian = response.xpath('/body/content/div[@id="background"]/div[@id="page"]/div[@id="content"]/div[@id="wochenkarte"]')
         #vegetarian = response.xpath('//div[@id="background"]/div[@id="page"]/div[@id="content"]/div[@id="pagecontent"]/div[@class="suppe_zutaten"]/text()').extract()
 
-        for i in range(len(dishesAux)):
-            if 'An heißen Sommertagen' in dishesAux[i]:
-                dishes.pop(i)
-            elif 'Unsere vegetarischen Suppen' in dishesAux[i]:
-                dishes.pop(i)
-            elif 'geschlossen' in dishesAux[i]:
-                dishes.pop(i)
+        idxs = list()
+        for i in range(len(dishes)):
+            if 'An heißen Sommertagen' in dishes[i]:
+                idxs.append(i)
+            elif 'Unsere vegetarischen Suppen' in dishes[i]:
+                idxs.append(i)
+            elif 'geschlossen' in dishes[i]:
+                idxs.append(i)
+        counter = 0
+        for idx in idxs:
+            index = idx - counter
+            del dishes[index]
+            counter += 1
 
         if len(names) != len(dishes) or len(names) != len(prices):
             raise KeyError('prices and dishes have different length')
