@@ -48,7 +48,6 @@ class MenuItem(scrapy.Item):
                 result.add('soup')
         for ing in self['ingredients']:
             result.add(ing.lower())
-        print(result)
         self['ingredients'] = list(result)
 
 
