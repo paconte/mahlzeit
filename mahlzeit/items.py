@@ -11,6 +11,12 @@ from datetime import timedelta
 from subprocess import call
 
 
+vegetarian_words = ['vegetarisch', 'vegan']
+vegan_words = ['vegan']
+fish_words = ['fisch', 'lachs', 'oktopus']
+soup_words = ['suppe', 'soljanka']
+
+
 class MenuItem(scrapy.Item):
     location = scrapy.Field()
     business = scrapy.Field()
@@ -18,6 +24,32 @@ class MenuItem(scrapy.Item):
     dish = scrapy.Field()
     price = scrapy.Field()
     ingredients = scrapy.Field()
+
+    def capitalize_ingredients(self):
+        result = list()
+        for ingr in self['ingredients']:
+            result.append(ingr.capitalize())
+        self['ingredients'] = result
+
+    def extract_ingredients(self):
+        result = set()
+        dish_lower = self['dish'].lower()
+        for word in vegetarian_words:
+            if word in dish_lower:
+                result.add('vegetarian')
+        for word in vegan_words:
+            if word in dish_lower:
+                result.add('vegan')
+        for word in fish_words:
+            if word in dish_lower:
+                result.add('fish')
+        for word in soup_words:
+            if word in dish_lower:
+                result.add('soup')
+        for ing in self['ingredients']:
+            result.add(ing.lower())
+        print(result)
+        self['ingredients'] = list(result)
 
 
 days = ['montag', 'dienstag', 'mittwoch', 'donnerstag', 'freitag']
