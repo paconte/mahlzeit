@@ -14,8 +14,8 @@ from subprocess import call
 vegetarian_words = ['vegetarisch', 'vegan']
 vegan_words = ['vegan']
 fish_words = ['fisch', 'lachs', 'oktopus']
-soup_words = ['suppe', 'soljanka']
-dessert_words = ['milschreis', 'grießbrei', 'kirschen']
+soup_words = ['suppe', 'soljanka', 'borschtsch']
+dessert_words = ['milschreis', 'grießbrei', 'kirschen', 'tiramisu']
 
 
 class MenuItem(scrapy.Item):
