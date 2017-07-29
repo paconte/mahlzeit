@@ -3,6 +3,14 @@ from mahlzeit.items import create_dish_for_week
 from mahlzeit.items import get_monday_date
 
 
+def delete_idxs(elements, idxs):
+    counter = 0
+    for idx in idxs:
+        index = idx - counter
+        del elements[index]
+        counter += 1
+
+
 class SuppenCultSpider(scrapy.Spider):
     name = "suppencult"
     start_urls = ['http://suppen-cult.de/index.php?page=8']
@@ -16,6 +24,7 @@ class SuppenCultSpider(scrapy.Spider):
         #vegetarian = response.xpath('/body/content/div[@id="background"]/div[@id="page"]/div[@id="content"]/div[@id="wochenkarte"]')
         #vegetarian = response.xpath('//div[@id="background"]/div[@id="page"]/div[@id="content"]/div[@id="pagecontent"]/div[@class="suppe_zutaten"]/text()').extract()
 
+        # delete invalid dishes descriptions
         idxs = list()
         for i in range(len(dishes)):
             if 'An heißen Sommertagen' in dishes[i]:
@@ -24,11 +33,13 @@ class SuppenCultSpider(scrapy.Spider):
                 idxs.append(i)
             elif 'geschlossen' in dishes[i]:
                 idxs.append(i)
-        counter = 0
-        for idx in idxs:
-            index = idx - counter
-            del dishes[index]
-            counter += 1
+        delete_idxs(dishes, idxs)
+        # delete invalid titles
+        idxs = list()
+        for i in range(len(names)):
+            if 'schließzeiten' in names[i].lower():
+                idxs.append(i)
+        delete_idxs(names, idxs)
 
         if len(names) != len(dishes) or len(names) != len(prices):
             raise KeyError('prices and dishes have different length')
