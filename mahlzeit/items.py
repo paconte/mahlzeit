@@ -13,7 +13,7 @@ from subprocess import call
 
 vegetarian_words = ['vegetarisch', 'vegan']
 vegan_words = ['vegan']
-fish_words = ['fisch', 'lachs', 'oktopus']
+fish_words = ['fisch', 'lachs', 'oktopus', 'kabeljau', 'rotbarsch', 'forelle', 'zander']
 soup_words = ['suppe', 'soljanka', 'borschtsch']
 dessert_words = ['milschreis', 'grießbrei', 'kirschen', 'tiramisu']
 
