@@ -1,6 +1,8 @@
 import scrapy
 from mahlzeit.items import MenuItem
 from mahlzeit.items import get_date_of_weekday
+from mahlzeit.items import create_dish_for_week
+from mahlzeit.items import get_monday_date
 from mahlzeit.items import days
 
 
@@ -16,11 +18,37 @@ def extract_dish(row):
     return result
 
 
+def extract_ingredients(ingredients, row):
+    result = list(ingredients)
+    img_alt = row.xpath('.//img/@alt').extract_first()
+    if img_alt and img_alt.lower() == 'vegetarisch':
+        result.append('vegetarian')
+    return result
+
+
+def extract_price(row):
+    return row.xpath('text()').extract_first()[:-5].replace(',','.')
+
+
 class AlbertSpider(scrapy.Spider):
     name = "albert"
     start_urls = ['http://www.albert-speisemanufaktur.de/speiseplan']
     business = 'Albert'
     location = 'Adlershof'
+
+    def extract_flammkuchen(self, index, rows):
+        result = list()
+        for i in range(index, len(rows)):
+            row = rows[i]
+            if (row.xpath('@data-title').extract_first() == 'Gericht'):
+                dish = extract_dish(row)
+                dish = 'Pflammkuchen: ' + dish
+                ing_aux = ['pflammkuchen']
+                ingredients = extract_ingredients(ing_aux, row)
+            elif (row.xpath('@data-title').extract_first() == 'Preis'):
+                price = extract_price(row)
+                result.extend(create_dish_for_week(self.location, self.business, dish, get_monday_date(), ingredients, price))
+        return result
 
     def parse(self, response):
         result = list()
@@ -31,16 +59,13 @@ class AlbertSpider(scrapy.Spider):
             if row.xpath('@data-title').extract_first() == '' and row.xpath('text()').extract_first().lower() in days:
                 dish_date = get_date_of_weekday(row.xpath('text()').extract_first())
             elif row.xpath('@data-title').extract_first() == '' and 'flammkuchen' in row.xpath('text()').extract_first().lower():
-                #print('FLAMKUCHEN')
+                result.extend(self.extract_flammkuchen(rows2.index(row), rows2))
                 break
             elif (row.xpath('@data-title').extract_first() == 'Gericht'):
                 item['dish'] = extract_dish(row)
-                item['ingredients'] = list()
-                img_alt = row.xpath('.//img/@alt').extract_first()
-                if img_alt and img_alt.lower() == 'vegetarisch':
-                    item['ingredients'].append('vegetarian')
+                item['ingredients'] = extract_ingredients(list(), row)
             elif (row.xpath('@data-title').extract_first() == 'Preis'):
-                item['price'] = row.xpath('text()').extract_first()[:-5].replace(',','.')
+                item['price'] = extract_price(row)
                 item['date'] = dish_date
                 item['business'] = self.business
                 item['location'] = self.location
