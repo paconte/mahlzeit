@@ -56,7 +56,11 @@ def make_json_pipeline_output_javascript_friendly(src_file, dst_file):
         output = output.replace(',[]{', ',{')
         output = output.replace('[,', '')
         output = output.replace(',,', ',')
-        output = output.replace(',]{', ',{')      
+        output = output.replace(',]{', ',{')
+        output = output.replace('}][{', '},{')
+        output = output.replace(',,,', ',')
+
+
         # output = output.replace('&', 'und')
         dst.write('const productsAux = \'')
         dst.write(output)
