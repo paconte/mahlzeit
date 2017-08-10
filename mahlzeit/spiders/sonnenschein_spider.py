@@ -45,7 +45,7 @@ def extract_ingredients(dishes):
 def parse_weekday(location, business, text, idx1, idx2, weekday):
     date = get_date_of_weekday(weekday)
     exp1 = re.compile(r'^Tagessuppe: ')
-    exp2 = re.compile(r'^[0-9]{1}(\.)?[ – |– ]')
+    exp2 = re.compile(r'^[0-9]{1}(\.)?[ – |– |-]')
     exp3 = re.compile(r'^[a-zA-Z]+')
     price_exp1 = re.compile(r'^[0-9]{1}.*€')
 
@@ -72,8 +72,10 @@ def parse_weekday(location, business, text, idx1, idx2, weekday):
             is_last_dish = False
             price = text[i][:-2].replace(',','.')
             prices.append(price)
+
     if len(prices) != len(dishes):
         raise KeyError('prices and dishes have different length')
+
     ingredients = extract_ingredients(dishes)
     result = list()
     for d, p, i in zip(dishes, prices, ingredients):
