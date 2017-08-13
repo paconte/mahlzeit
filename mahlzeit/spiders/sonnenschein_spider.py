@@ -70,7 +70,7 @@ def parse_weekday(location, business, text, idx1, idx2, weekday):
             dishes[-1] = dishes[-1] + ' ' + text[i][:-1]
         elif price_exp1.match(text[i]):
             is_last_dish = False
-            price = text[i][:-2].replace(',','.')
+            price = text[i][:-2].replace(',', '.')
             prices.append(price)
 
     if len(prices) != len(dishes):
@@ -79,7 +79,7 @@ def parse_weekday(location, business, text, idx1, idx2, weekday):
     ingredients = extract_ingredients(dishes)
     result = list()
     for d, p, i in zip(dishes, prices, ingredients):
-        item = MenuItem(location=location ,business=business, dish=d, price=p, date=date, ingredients=i)
+        item = MenuItem(location=location, business=business, dish=d, price=p, date=date, ingredients=i)
         result.append(item)
     return result
 
@@ -89,10 +89,6 @@ class SonnenscheinSpider(scrapy.Spider):
     start_urls = ['http://www.adlershof.de/fileadmin/user_upload/downloads/essen/sonnenschein.pdf']
     business = 'Sonnenschein'
     location = 'Adlershof'
-
-    def find_line_index(day):
-        idx = text.index('%s\n' % day)
-        return idx
 
     def parse(self, response):
         items = list()
