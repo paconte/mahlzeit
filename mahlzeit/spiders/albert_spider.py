@@ -42,8 +42,8 @@ class AlbertSpider(scrapy.Spider):
             row = rows[i]
             if (row.xpath('@data-title').extract_first() == 'Gericht'):
                 dish = extract_dish(row)
-                dish = 'Pflammkuchen: ' + dish
-                ing_aux = ['pflammkuchen']
+                dish = 'Flammkuchen: ' + dish
+                ing_aux = ['Flammkuchen']
                 ingredients = extract_ingredients(ing_aux, row)
             elif (row.xpath('@data-title').extract_first() == 'Preis'):
                 price = extract_price(row)
