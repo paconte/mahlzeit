@@ -70,7 +70,7 @@ class LaPetiteSpider(scrapy.Spider):
         items = list()
         # convert picture in text
         filename = create_filename_week('la-petite')
-        download_and_convert_to_text(response, filename)
+        download_and_convert_to_text(response.body, filename)
         # clean original picture text
         prepare_text(filename)
         # extract key idexes of text

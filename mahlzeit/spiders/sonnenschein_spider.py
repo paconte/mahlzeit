@@ -25,7 +25,7 @@ def extract_price_at_end(text):
     price = re.search(r' [0-9]{1}.*€', text)
     dish = text
     if price:
-        price = price.group(0)[1:-1].replace(',','.')
+        price = price.group(0)[1:-1].replace(',', '.')
         dish = re.sub(r' [0-9]{1}.*€', '', text)
     return dish, price
 
@@ -93,7 +93,7 @@ class SonnenscheinSpider(scrapy.Spider):
     def parse(self, response):
         items = list()
         filename = create_filename_week('sonnenschein')
-        download_and_convert_to_text(response, filename)
+        download_and_convert_to_text(response.body, filename)
         days = ['Montag\n', 'Dienstag\n', 'Mittwoch\n', 'Donnerstag\n', 'Freitag\n']
         with open(filename, 'r') as f:
             text = f.readlines()

@@ -85,7 +85,7 @@ class DieLoeffelei(scrapy.Spider):
     def parse(self, response):
         items = list()
         filename = create_filename_week(self.name)
-        download_and_convert_to_text(response, filename)
+        download_and_convert_to_text(response.body, filename)
         with open(filename, 'r') as f:
             text = f.readlines()
             # find out key indexes to parse the text
