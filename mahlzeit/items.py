@@ -9,7 +9,10 @@ import scrapy
 from datetime import datetime
 from datetime import timedelta
 from subprocess import call
+from scrapy.utils.project import get_project_settings
 
+
+settings = get_project_settings()
 
 vegetarian_words = ['vegetarisch', 'vegan']
 vegan_words = ['vegan']
@@ -63,12 +66,14 @@ days = ['montag', 'dienstag', 'mittwoch', 'donnerstag', 'freitag']
 
 
 def create_filename_week(base, weeks=0):
+    path = settings.get('EXPORT_FILES')
     kw = datetime.today().isocalendar()[1]
-    return '%s-kw%s.txt' % (str(base), str(kw))
+    return path + '%s-kw%s.txt' % (str(base), str(kw))
 
 
 def download_and_convert_to_text(response, dst_file):
-    filename = 'download.pdf'
+    path = settings.get('EXPORT_FILES')
+    filename = path + 'download.pdf'
     with open(filename, 'wb') as f:
         f.write(response.body)
     call(["rm", dst_file])
@@ -86,8 +91,8 @@ def create_dish_for_week(location, business, dish, date, ingredients=list(), pri
 
 def get_date(date, weekday):
     day = weekday.lower()
-    if (day not in days):
-        raise TypeValueException('Wrong week day.')
+    if day not in days:
+        raise ValueError('Wrong week day.')
     days_to_add = days.index(day)
     return (date + timedelta(days=days_to_add)).strftime('%d.%m.%Y')
 
