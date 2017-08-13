@@ -5,7 +5,7 @@ from mahlzeit.items import days
 
 class JouisNourSpider(CSVFeedSpider):
     name = "jouisnour"
-    start_urls = ['file:///home/frevilla/devel/scrapy/mahlzeit/exports/jouisnour.csv']
+    start_urls = ['file:///home/frevilla/devel/scrapy/mahlzeit/data/jouisnour.csv']
     headers = ['date', 'location', 'business', 'price', 'type', 'name']
     delimiter = ';'
     #quotechar = "'"

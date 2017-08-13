@@ -7,19 +7,18 @@
 import csv
 from scrapy.exporters import JsonItemExporter
 from scrapy.exporters import CsvItemExporter
-from scrapy.exporters import JsonLinesItemExporter
+from scrapy.utils.project import get_project_settings
 from datetime import datetime
 
 
-pipeline_directory = './exports/'
-
-
 def get_filename(type):
+    settings = get_project_settings()
+    pipeline_directory = settings.get('EXPORT_FILES')
     date = datetime.today()
     if type == 'csv':
-        result = pipeline_directory +  'mahlzeit-%s.csv' % date.strftime("%Y-%m-%d")
+        result = pipeline_directory + 'mahlzeit-%s.csv' % date.strftime("%Y-%m-%d")
     elif type == 'json':
-        result = pipeline_directory +  'mahlzeit-%s.json' % date.strftime("%Y-%m-%d")
+        result = pipeline_directory + 'mahlzeit-%s.json' % date.strftime("%Y-%m-%d")
     else:
         raise AttributeError('Wrong argument %s' % type)
     return result
