@@ -78,14 +78,15 @@ def extract_ingredients(dish):
 
 class DieLoeffelei(scrapy.Spider):
     name = "dieloeffelei"
-    start_urls = ['https://www.die-loeffelei.de/app/download/6477658/Speisekarte+07.08.pdf']
+    start_urls = ['https://www.die-loeffelei.de/']
     business = 'Die Loeffelei'
     location = 'Potsdamer Straße'
     
     def parse(self, response):
+        link = response.xpath('//div[@class="leftDownload"]/a/@href').extract_first()
         items = list()
         filename = create_filename_week(self.name)
-        download_and_convert_to_text(response.body, filename)
+        download_and_convert_to_text(link, filename, True)
         with open(filename, 'r') as f:
             text = f.readlines()
             # find out key indexes to parse the text
@@ -99,6 +100,12 @@ class DieLoeffelei(scrapy.Spider):
             # extract prices
             prices = parse_prices(text, indexes['Saturday'])
             if len(items) != len(prices):
+                print(len(items), len(prices))
+                for i in items:
+                    print(i['dish'])
+                print('##########')
+                for i in prices:
+                    print(i)
                 raise KeyError('prices and dishes have different length')
             # add prices to items
             for item, price in zip(items, prices):
