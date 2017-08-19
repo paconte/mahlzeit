@@ -1,9 +1,4 @@
 import scrapy
-from mahlzeit.items import MenuItem
-from mahlzeit.items import get_date_of_weekday
-from mahlzeit.items import create_dish_for_week
-from mahlzeit.items import get_monday_date
-from mahlzeit.items import days
 
 
 class JosephRothDieleSpider(scrapy.Spider):

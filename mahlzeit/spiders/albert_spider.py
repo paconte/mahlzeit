@@ -40,14 +40,15 @@ class AlbertSpider(scrapy.Spider):
         result = list()
         for i in range(index, len(rows)):
             row = rows[i]
-            if (row.xpath('@data-title').extract_first() == 'Gericht'):
+            if row.xpath('@data-title').extract_first() == 'Gericht':
                 dish = extract_dish(row)
                 dish = 'Flammkuchen: ' + dish
                 ing_aux = ['Flammkuchen']
                 ingredients = extract_ingredients(ing_aux, row)
-            elif (row.xpath('@data-title').extract_first() == 'Preis'):
+            elif row.xpath('@data-title').extract_first() == 'Preis':
                 price = extract_price(row)
-                result.extend(create_dish_for_week(self.location, self.business, dish, get_monday_date(), ingredients, price))
+                result.extend(create_dish_for_week(
+                    self.location, self.business, dish, get_monday_date(), ingredients, price))
         return result
 
     def parse(self, response):
@@ -58,13 +59,14 @@ class AlbertSpider(scrapy.Spider):
         for row in rows2:
             if row.xpath('@data-title').extract_first() == '' and row.xpath('text()').extract_first().lower() in days:
                 dish_date = get_date_of_weekday(row.xpath('text()').extract_first())
-            elif row.xpath('@data-title').extract_first() == '' and 'flammkuchen' in row.xpath('text()').extract_first().lower():
+            elif row.xpath('@data-title').extract_first() == '' \
+                    and 'flammkuchen' in row.xpath('text()').extract_first().lower():
                 result.extend(self.extract_flammkuchen(rows2.index(row), rows2))
                 break
-            elif (row.xpath('@data-title').extract_first() == 'Gericht'):
+            elif row.xpath('@data-title').extract_first() == 'Gericht':
                 item['dish'] = extract_dish(row)
                 item['ingredients'] = extract_ingredients(list(), row)
-            elif (row.xpath('@data-title').extract_first() == 'Preis'):
+            elif row.xpath('@data-title').extract_first() == 'Preis':
                 item['price'] = extract_price(row)
                 item['date'] = dish_date
                 item['business'] = self.business

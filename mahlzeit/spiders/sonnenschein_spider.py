@@ -53,7 +53,6 @@ def parse_weekday(location, business, text, idx1, idx2, weekday):
     dishes = list()
     is_last_dish = False
     for i in range(idx1, idx2):
-        prince_at_end = re.search(r' [0-9]{1}.*€', text[i])
         if exp1.match(text[i]):
             is_last_dish = True
             dish = re.sub(exp1, '', text[i])[:-1]

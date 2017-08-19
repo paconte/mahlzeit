@@ -3,9 +3,9 @@ from mahlzeit.items import create_dish_for_week
 from mahlzeit.items import get_monday_date
 
 
-def delete_idxs(elements, idxs):
+def delete_idexes(elements, idexes):
     counter = 0
-    for idx in idxs:
+    for idx in idexes:
         index = idx - counter
         del elements[index]
         counter += 1
@@ -33,13 +33,13 @@ class SuppenCultSpider(scrapy.Spider):
                 idxs.append(i)
             elif 'geschlossen' in dishes[i]:
                 idxs.append(i)
-        delete_idxs(dishes, idxs)
+        delete_idexes(dishes, idxs)
         # delete invalid titles
         idxs = list()
         for i in range(len(names)):
             if 'schließzeiten' in names[i].lower():
                 idxs.append(i)
-        delete_idxs(names, idxs)
+        delete_idexes(names, idxs)
 
         if len(names) != len(dishes) or len(names) != len(prices):
             raise KeyError('prices and dishes have different length')

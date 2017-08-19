@@ -1,14 +1,12 @@
 from scrapy.spiders import CSVFeedSpider
 from mahlzeit.items import MenuItem
-from mahlzeit.items import get_date_of_weekday
-from mahlzeit.items import days
+
 
 class JouisNourSpider(CSVFeedSpider):
     name = "jouisnour"
     start_urls = ['file:///home/frevilla/devel/scrapy/mahlzeit/data/jouisnour.csv']
     headers = ['date', 'location', 'business', 'price', 'type', 'name']
     delimiter = ';'
-    #quotechar = "'"
 
     def parse_row(self, response, row):
         # skip headers
@@ -19,9 +17,9 @@ class JouisNourSpider(CSVFeedSpider):
         types = types.split(',')
         ingredients = list()
         for t in types:
-            t = t.replace(' ','')
+            t = t.replace(' ', '')
             if len(t) > 1:
-                ingredients.append(t.replace(' ',''))
+                ingredients.append(t.replace(' ', ''))
         # create item
         item = MenuItem()
         item['date'] = row['date']

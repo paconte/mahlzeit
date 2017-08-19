@@ -1,6 +1,5 @@
 import scrapy
 import re
-from subprocess import call
 from mahlzeit.items import create_filename_week
 from mahlzeit.items import download_and_convert_to_text
 from mahlzeit.items import days

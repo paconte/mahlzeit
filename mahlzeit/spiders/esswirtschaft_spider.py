@@ -1,10 +1,8 @@
 import scrapy
-from datetime import datetime
 from mahlzeit.items import MenuItem
 from mahlzeit.items import get_date, get_date_of_weekday
 from mahlzeit.items import create_dish_for_week
 from mahlzeit.items import get_monday_date
-from mahlzeit.items import days
 
 
 def extract_ingredients(dish):
@@ -26,11 +24,9 @@ class EWSpider(scrapy.Spider):
     business = 'Esswirtschaft'
     location = 'Adlershof'
 
-
     def create_item(self, dish, date):
         dish_aux, ingredients = extract_ingredients(dish)
         return MenuItem(dish=dish_aux, date=date, ingredients=ingredients, location=self.location, business=self.business)
-
 
     def parse(self, response):
         result = list()
