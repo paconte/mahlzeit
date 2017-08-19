@@ -27,9 +27,9 @@ class SuppenCultSpider(scrapy.Spider):
         # delete invalid dishes descriptions
         idxs = list()
         for i in range(len(dishes)):
-            if 'An heißen Sommertagen' in dishes[i]:
+            if 'An heißen Sommertagen'.lower() in dishes[i].lower():
                 idxs.append(i)
-            elif 'Unsere vegetarischen Suppen' in dishes[i]:
+            elif 'Unsere vegetarischen Suppen'.lower() in dishes[i].lower():
                 idxs.append(i)
             elif 'geschlossen' in dishes[i]:
                 idxs.append(i)
