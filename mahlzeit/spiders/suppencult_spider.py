@@ -16,6 +16,7 @@ class SuppenCultSpider(scrapy.Spider):
     start_urls = ['http://suppen-cult.de/index.php?page=8']
     business = 'Suppencult'
     location = 'Alexanderplatz'
+    coordinates = [(52.536132, 13.422852)]
 
     def parse(self, response):
         names = response.xpath('//div[@class="suppe_name"]/text()').extract()

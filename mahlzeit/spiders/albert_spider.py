@@ -35,6 +35,7 @@ class AlbertSpider(scrapy.Spider):
     start_urls = ['http://www.albert-speisemanufaktur.de/speiseplan']
     business = 'Albert'
     location = 'Adlershof'
+    coordinates = [(52.431505, 13.536830)]
 
     def extract_flammkuchen(self, index, rows):
         result = list()

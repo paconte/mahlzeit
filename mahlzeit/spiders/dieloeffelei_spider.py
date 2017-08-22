@@ -81,6 +81,7 @@ class DieLoeffelei(scrapy.Spider):
     start_urls = ['https://www.die-loeffelei.de/']
     business = 'Die Loeffelei'
     location = 'Potsdamer Straße'
+    coordinates = [(52.502667, 13.365823)]
     
     def parse(self, response):
         link = response.xpath('//div[@class="leftDownload"]/a/@href').extract_first()

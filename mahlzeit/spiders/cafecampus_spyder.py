@@ -47,6 +47,7 @@ class CafeCampusSpider(scrapy.Spider):
     start_urls = ['https://www.cafe-campus-adlershof.de/speisen-getränke/wochenkarte/']
     business = 'Cafe Campus'
     location = 'Adlershof'
+    coordinates = [(52.435679, 13.529603)]
 
     def parse(self, response):
         items = list()

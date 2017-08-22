@@ -7,6 +7,7 @@ class JouisNourSpider(CSVFeedSpider):
     start_urls = ['file:///home/frevilla/devel/scrapy/mahlzeit/data/jouisnour.csv']
     headers = ['date', 'location', 'business', 'price', 'type', 'name']
     delimiter = ';'
+    coordinates = [(52.432440, 13.534732)]
 
     def parse_row(self, response, row):
         # skip headers

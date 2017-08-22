@@ -64,6 +64,7 @@ class LaPetiteSpider(scrapy.Spider):
     business = 'La Petite'
     location = 'Adlershof'
     start_urls = ['http://www.bistro-lapetite.de/downloads/speisekarte.pdf']
+    coordinates = [(52.430156, 13.541748)]
 
     def parse(self, response):
         items = list()

@@ -23,6 +23,7 @@ class EWSpider(scrapy.Spider):
     start_urls = ['http://www.esswirtschaft.de/wochenkarte/wochenkarte.html']
     business = 'Esswirtschaft'
     location = 'Adlershof'
+    coordinates = [(52.431399, 13.532762)]
 
     def create_item(self, dish, date):
         dish_aux, ingredients = extract_ingredients(dish)

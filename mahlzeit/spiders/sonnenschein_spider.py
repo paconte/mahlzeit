@@ -88,6 +88,7 @@ class SonnenscheinSpider(scrapy.Spider):
     start_urls = ['http://www.adlershof.de/fileadmin/user_upload/downloads/essen/sonnenschein.pdf']
     business = 'Sonnenschein'
     location = 'Adlershof'
+    coordinates = [(52.429812, 13.537330)]
 
     def parse(self, response):
         items = list()

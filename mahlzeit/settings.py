@@ -17,7 +17,7 @@ LOG_LEVEL = 'WARNING'
 DATA_FILES = 'data/'
 EXPORT_FILES = DATA_FILES +'export/'
 LOG_FILE = DATA_FILES + "log/log-mahlzeit.log"
-
+COMMANDS_MODULE = 'mahlzeit.commands'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'mahlzeit (+http://www.yourdomain.com)'
@@ -71,7 +71,12 @@ ROBOTSTXT_OBEY = True
 ITEM_PIPELINES = {
     'mahlzeit.pipelines.JsonExportPipeline': 300,
     'mahlzeit.pipelines.CsvExportPipeline': 400,
+    'mahlzeit.pipelines.MongoDBPipeline': 500,
 }
+MONGODB_SERVER = "localhost"
+MONGODB_PORT = 27017
+MONGODB_DB = "coolinarius"
+MONGODB_COLLECTION = "lunch"
 
 
 # Enable and configure the AutoThrottle extension (disabled by default)
