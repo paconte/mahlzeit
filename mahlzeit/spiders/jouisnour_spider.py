@@ -8,6 +8,7 @@ class JouisNourSpider(CSVFeedSpider):
     headers = ['date', 'location', 'business', 'price', 'type', 'name']
     delimiter = ';'
     coordinates = [(52.432440, 13.534732)]
+    custom_settings = {'ROBOTSTXT_OBEY': 'False'}
 
     def parse_row(self, response, row):
         # skip headers
