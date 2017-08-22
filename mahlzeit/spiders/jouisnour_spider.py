@@ -1,5 +1,6 @@
 from scrapy.spiders import CSVFeedSpider
 from mahlzeit.items import MenuItem
+from dateutil.parser import parse
 
 
 class JouisNourSpider(CSVFeedSpider):
@@ -24,7 +25,7 @@ class JouisNourSpider(CSVFeedSpider):
                 ingredients.append(t.replace(' ', ''))
         # create item
         item = MenuItem()
-        item['date'] = row['date']
+        item['date'] = parse(row['date'])
         item['location'] = row['location']
         item['business'] = row['business']
         item['price'] = row['price']

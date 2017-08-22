@@ -97,11 +97,12 @@ def get_date(date, weekday):
     if day not in days:
         raise ValueError('Wrong week day.')
     days_to_add = days.index(day)
-    return (date + timedelta(days=days_to_add)).strftime('%d.%m.%Y')
+    result = date + timedelta(days=days_to_add)
+    return result
 
 
 def get_monday_date(weeks=0):
-    date = datetime.today() + timedelta(weeks=weeks)
+    date = get_today_midnight() + timedelta(weeks=weeks)
     weekday = date.weekday()
     monday_date = date - timedelta(days=weekday)
     return monday_date
@@ -122,3 +123,8 @@ def get_date_of_weekday(weekday, weeks=0):
     """
     monday = get_monday_date(weeks)
     return get_date(monday, weekday)
+
+
+def get_today_midnight():
+    return datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
+
