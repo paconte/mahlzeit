@@ -7,9 +7,11 @@ import json
 
 ingredients = ['vegan', 'vegetarian', 'fish']
 
-def print_array(list):
-    for x in list:
+
+def print_array(array):
+    for x in array:
         print(x)
+
 
 def _create_ingredients(string):
     result = list()
@@ -19,12 +21,14 @@ def _create_ingredients(string):
                 result.append(ingredients[i])
     return result
 
+
 def _write_json(dst_file, json_obj):
     f = open(dst_file, 'w')
     f.write('const productsAux = \'')
     json.dump(json_obj, f, ensure_ascii=False, separators=(',\' +\n\'', ': '))
     f.write('\';\nconst products = JSON.parse(productsAux);\n')
     f.write('export default products;\n')
+
 
 def csv_to_json(src_file, dst_file):
     # load json
@@ -34,7 +38,7 @@ def csv_to_json(src_file, dst_file):
     json_obj = json.loads(json_string)
     for x in json_obj:
         x['type'] = _create_ingredients(x['type'])
-        x['name'] = x['name'].replace('"','')
+        x['name'] = x['name'].replace('"', '')
     # write to file
     _write_json(dst_file, json_obj)
 
@@ -68,37 +72,37 @@ def make_json_pipeline_output_javascript_friendly(src_file, dst_file):
         dst.write('export default products;\n')
 
 
-#csv_to_json('./data.csv', './test.js')
+# csv_to_json('./data.csv', './test.js')
 
 
 def main(argv):
-    scriptname = 'intro.py'
-    inputfile = None
-    outputfile = None
+    script_name = 'intro.py'
+    input_file = None
+    output_file = None
 
     try:
-        opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
+        opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
     except getopt.GetoptError:
-        print('%s -i <inputfile> -o <outputfile>' % scriptname)
+        print('%s -i <inputfile> -o <outputfile>' % script_name)
         sys.exit(2)
 
     for opt, arg in opts:
         if opt == '-h':
-            print('%s -i <inputfile> -o <outputfile>' % scriptname)
+            print('%s -i <inputfile> -o <outputfile>' % script_name)
             sys.exit()
         elif opt in ("-i", "--ifile"):
-            inputfile = arg
+            input_file = arg
         elif opt in ("-o", "--ofile"):
-            outputfile = arg
+            output_file = arg
 
-    if not inputfile or not outputfile:
-        print('%s -i <inputfile> -o <outputfile>' % scriptname)
+    if not input_file or not output_file:
+        print('%s -i <inputfile> -o <outputfile>' % script_name)
         sys.exit()
 
-    print('Input file is "%s"' % inputfile)
-    print('Output file is "%s"' % outputfile)
-    make_json_pipeline_output_javascript_friendly(inputfile, outputfile)
+    print('Input file is "%s"' % input_file)
+    print('Output file is "%s"' % output_file)
+    make_json_pipeline_output_javascript_friendly(input_file, output_file)
 
 
 if __name__ == "__main__":
-   main(sys.argv[1:])
+    main(sys.argv[1:])
