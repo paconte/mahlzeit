@@ -5,22 +5,24 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import csv
+import pymongo
+from pymongo.errors import DuplicateKeyError
+from datetime import datetime
 from scrapy.exporters import JsonItemExporter
 from scrapy.exporters import CsvItemExporter
-from scrapy.utils.project import get_project_settings
-from datetime import datetime
+from scrapy.exceptions import DropItem
+from scrapy.conf import settings
 
 
-def get_filename(type):
-    settings = get_project_settings()
+def get_filename(file_type):
     pipeline_directory = settings.get('EXPORT_FILES')
     date = datetime.today()
-    if type == 'csv':
+    if file_type == 'csv':
         result = pipeline_directory + 'mahlzeit-%s.csv' % date.strftime("%Y-%m-%d")
-    elif type == 'json':
+    elif file_type == 'json':
         result = pipeline_directory + 'mahlzeit-%s.json' % date.strftime("%Y-%m-%d")
     else:
-        raise AttributeError('Wrong argument %s' % type)
+        raise AttributeError('Wrong argument %s' % file_type)
     return result
 
 
@@ -45,6 +47,23 @@ def clean_item_price(price):
     return result
 
 
+def clean_item(item):
+    item['dish'] = clean_item_dish(item['dish'])
+    item.extract_ingredients()
+    if 'price' in item:
+        item['price'] = clean_item_price(item['price'])
+    return item
+
+
+def validate_menu_item(item):
+    if not item['dish'] or len(item['dish'] < 5):
+        raise DropItem('Missing %s' % 'dish')
+    if not item['location']:
+        raise DropItem('Missing %s' % 'location')
+    if not item['business']:
+        raise DropItem('Missing %s' % 'business')
+
+
 class JsonExportPipeline(object):
     def __init__(self):
         filename = get_filename('json')
@@ -57,10 +76,7 @@ class JsonExportPipeline(object):
         self.file.close()
 
     def process_item(self, item, spider):
-        item['dish'] = clean_item_dish(item['dish'])
-        item.extract_ingredients()
-        if 'price' in item:
-            item['price'] = clean_item_price(item['price'])
+        item = clean_item(item)
         self.exporter.export_item(item)
         return item
 
@@ -77,9 +93,21 @@ class CsvExportPipeline(object):
         self.file.close()
 
     def process_item(self, item, spider):
-        item['dish'] = clean_item_dish(item['dish'])
-        item.extract_ingredients()
-        if 'price' in item:
-            item['price'] = clean_item_price(item['price'])
+        item = clean_item(item)
         self.exporter.export_item(item)
+        return item
+
+
+class MongoDBPipeline(object):
+    def __init__(self):
+        connection = pymongo.MongoClient(settings['MONGODB_SERVER'], settings['MONGODB_PORT'])
+        db = connection[settings['MONGODB_DB']]
+        self.collection = db[settings['MONGODB_COLLECTION']]
+
+    def process_item(self, item, spider):
+        try:
+            self.collection.insert(dict(item))
+        except DuplicateKeyError:
+            pass
+        #log.msg("Question added to MongoDB database!", level=log.DEBUG, spider=spider)
         return item

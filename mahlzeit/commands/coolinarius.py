@@ -23,10 +23,15 @@ www.cook-berlin.de/mittagstisch/
 """
 import os
 import smtplib
+from pymongo import MongoClient
+from bson.json_util import dumps
 from scrapy.commands import ScrapyCommand
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
+from mahlzeit.items import get_today_midnight
+from mahlzeit.items import get_date_of_weekday
 from email.mime.text import MIMEText
+
 
 settings = get_project_settings()
 process = CrawlerProcess(settings)
@@ -52,13 +57,28 @@ class Command(ScrapyCommand):
         return 'Runs all the production ready spiders of coolinarius'
 
     def run(self, args, opts):
+        # save size of log file and number of items at the db
         log_size_init = get_file_size(log_file)
+        db_items_init = count_lunches()
+
+        # crawl and insert in the db
         for spider_name in spider_list:
             process.crawl(spider_name)
         process.start()
+
+        # save new sizes of log file and items at the db
         log_size_end = get_file_size(log_file)
+        db_items_end = count_lunches()
+
+        # if the log file has new entries send an email to notify
         if log_size_init < log_size_end:
             send_email(self.email_from, self.email_to)
+
+        # if there are new lunch menues in the db then create new json file for front end
+        if db_items_end > db_items_init:
+            pass
+        else:
+            print_cursor_to_file(get_week_lunches_mongodb(), './lunches.json', True)
 
 
 def get_file_size(filename):
@@ -75,5 +95,29 @@ def send_email(email_from, email_to):
     server.sendmail(email_from, [email_to], msg.as_string())
     server.quit()
 
+
+def count_lunches():
+    return get_week_lunches_mongodb().count()
+
+
+def get_week_lunches_mongodb():
+    client = MongoClient('localhost', 27017)
+    collection = client.coolinarius.lunch
+    current = get_today_midnight()
+    friday = get_date_of_weekday('freitag')
+    result = collection.find({"date": {"$gte": current, "$lte": friday}})
+    return result
+
+
+def print_cursor_to_file(cursor, dst, variable=False):
+    obj = dumps(cursor)
+    with open(dst, "w") as fp:
+        if variable:
+            fp.write('const productsAux = \'')
+            fp.write(obj)
+            fp.write('\';\nconst products = JSON.parse(productsAux);\n')
+            fp.write('export default products;\n')
+        else:
+            fp.write(obj)
 
 #db.lunch.createIndex( { date: 1, location: 1, business: 1 , dish: 1}, { unique: true } )
