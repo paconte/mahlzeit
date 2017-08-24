@@ -23,13 +23,14 @@ www.cook-berlin.de/mittagstisch/
 """
 import os
 import smtplib
-from pymongo import MongoClient
-from bson.json_util import dumps
 from scrapy.commands import ScrapyCommand
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
-from mahlzeit.date_utils import get_today_midnight
-from mahlzeit.date_utils import get_date_of_weekday
+from mahlzeit.db_utils import count_lunches
+from mahlzeit.db_utils import get_week_lunches_mongodb
+from mahlzeit.db_utils import print_cursor_to_file
+
+
 from email.mime.text import MIMEText
 
 
@@ -94,30 +95,3 @@ def send_email(email_from, email_to):
     server = smtplib.SMTP('localhost')
     server.sendmail(email_from, [email_to], msg.as_string())
     server.quit()
-
-
-def count_lunches():
-    return get_week_lunches_mongodb().count()
-
-
-def get_week_lunches_mongodb():
-    client = MongoClient('localhost', 27017)
-    collection = client.coolinarius.lunch
-    current = get_today_midnight()
-    friday = get_date_of_weekday('freitag')
-    result = collection.find({"date": {"$gte": current, "$lte": friday}})
-    return result
-
-
-def print_cursor_to_file(cursor, dst, variable=False):
-    obj = dumps(cursor)
-    with open(dst, "w") as fp:
-        if variable:
-            fp.write('const productsAux = \'')
-            fp.write(obj)
-            fp.write('\';\nconst products = JSON.parse(productsAux);\n')
-            fp.write('export default products;\n')
-        else:
-            fp.write(obj)
-
-#db.lunch.createIndex( { date: 1, location: 1, business: 1 , dish: 1}, { unique: true } )
