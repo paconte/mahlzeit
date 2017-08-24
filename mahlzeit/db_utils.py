@@ -7,8 +7,15 @@ from mahlzeit.date_utils import get_date_of_weekday
 client = MongoClient('localhost', 27017)
 
 
-def count_lunches():
-    return get_week_lunches_mongodb().count()
+def count_lunches(list_business=None, start=None):
+    lunches = get_week_lunches_mongodb(list_business, start)
+    if isinstance(lunches, dict):
+        result = dict()
+        for key, cursor in lunches.items():
+            result[key] = cursor.count()
+    else:
+        result = lunches.count()
+    return result
 
 
 def get_week_lunches_mongodb(list_business=None, start=None):
