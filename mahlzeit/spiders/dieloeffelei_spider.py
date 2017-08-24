@@ -1,9 +1,9 @@
 import scrapy
 import re
 from mahlzeit.items import MenuItem
-from mahlzeit.items import get_date_of_weekday
-from mahlzeit.items import download_and_convert_to_text
-from mahlzeit.items import create_filename_week
+from mahlzeit.date_utils import get_date_of_weekday
+from mahlzeit.date_utils import download_and_convert_to_text
+from mahlzeit.date_utils import create_filename_week
 
 
 days = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag']

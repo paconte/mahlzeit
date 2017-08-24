@@ -1,10 +1,10 @@
 import scrapy
 import re
 from mahlzeit.items import MenuItem
-from mahlzeit.items import get_date_of_weekday
-from mahlzeit.items import create_dish_for_week
-from mahlzeit.items import german_days
-from mahlzeit.items import get_current_week_number
+from mahlzeit.date_utils import get_date_of_weekday
+from mahlzeit.date_utils import create_dish_for_week
+from mahlzeit.date_utils import german_days
+from mahlzeit.date_utils import get_current_week_number
 
 
 def extract_dish(row):

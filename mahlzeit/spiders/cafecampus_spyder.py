@@ -1,9 +1,9 @@
 import scrapy
 import re
-from mahlzeit.items import download_and_convert_to_text
-from mahlzeit.items import create_filename_week
-from mahlzeit.items import create_dish_for_week
-from mahlzeit.items import get_date_of_weekday
+from mahlzeit.date_utils import download_and_convert_to_text
+from mahlzeit.date_utils import create_filename_week
+from mahlzeit.date_utils import create_dish_for_week
+from mahlzeit.date_utils import get_date_of_weekday
 
 
 def clean_price(line):

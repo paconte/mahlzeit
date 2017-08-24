@@ -1,9 +1,9 @@
 import scrapy
 import re
 from datetime import datetime
-from mahlzeit.items import create_dish_for_week
-from mahlzeit.items import get_current_week_number
-from mahlzeit.items import get_date_of_weekday
+from mahlzeit.date_utils import create_dish_for_week
+from mahlzeit.date_utils import get_current_week_number
+from mahlzeit.date_utils import get_date_of_weekday
 
 
 def delete_idexes(elements, idexes):

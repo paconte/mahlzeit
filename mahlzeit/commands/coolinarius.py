@@ -28,8 +28,8 @@ from bson.json_util import dumps
 from scrapy.commands import ScrapyCommand
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
-from mahlzeit.items import get_today_midnight
-from mahlzeit.items import get_date_of_weekday
+from mahlzeit.date_utils import get_today_midnight
+from mahlzeit.date_utils import get_date_of_weekday
 from email.mime.text import MIMEText
 
 
