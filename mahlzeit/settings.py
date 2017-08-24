@@ -15,7 +15,7 @@ SPIDER_MODULES = ['mahlzeit.spiders']
 NEWSPIDER_MODULE = 'mahlzeit.spiders'
 LOG_LEVEL = 'WARNING'
 DATA_FILES = 'data/'
-EXPORT_FILES = DATA_FILES +'export/'
+EXPORT_FILES = DATA_FILES + 'export/'
 LOG_FILE = DATA_FILES + "log/log-mahlzeit.log"
 COMMANDS_MODULE = 'mahlzeit.commands'
 

@@ -3,7 +3,7 @@ import re
 from mahlzeit.items import download_and_convert_to_text
 from mahlzeit.items import create_filename_week
 from mahlzeit.items import create_dish_for_week
-from mahlzeit.items import get_monday_date
+from mahlzeit.items import get_date_of_weekday
 
 
 def clean_price(line):
@@ -54,7 +54,7 @@ class CafeCampusSpider(scrapy.Spider):
         rows = response.xpath('//div[@class="rightDownload"]')
         for r in rows:
             link = r.xpath('./a/@href').extract_first()
-            items.extend(download_and_parse(link, self.name, self.location, self.business, get_monday_date()))
+            items.extend(download_and_parse(link, self.name, self.location, self.business, get_date_of_weekday('monday')))
             break
         return items
 

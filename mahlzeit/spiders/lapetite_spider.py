@@ -2,9 +2,9 @@ import scrapy
 import re
 from mahlzeit.items import create_filename_week
 from mahlzeit.items import download_and_convert_to_text
-from mahlzeit.items import days
+from mahlzeit.items import german_days
 from mahlzeit.items import create_dish_for_week
-from mahlzeit.items import get_monday_date
+from mahlzeit.items import get_date_of_weekday
 
 
 def prepare_text(filename):
@@ -41,7 +41,7 @@ def extract_info(location, business, idx1, idx2, text):
     dish = ''
     for i in range(idx1, idx2):
         ignore = False
-        for day in days:
+        for day in german_days:
             lower_line = text[i].lower()
             if lower_line.find(day) > -1:
                 ignore = True
@@ -53,8 +53,8 @@ def extract_info(location, business, idx1, idx2, text):
         dish = dish[1:]
     price = text[i+1].replace('euros', '')
     price = price.replace(' ', '')
-    price = price.replace('\n','')
-    date = get_monday_date()
+    price = price.replace('\n', '')
+    date = get_date_of_weekday('monday')
     ingredients = list()
     return create_dish_for_week(location, business, dish, date, ingredients, price)
 
