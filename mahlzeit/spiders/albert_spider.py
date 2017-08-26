@@ -4,7 +4,7 @@ from mahlzeit.items import MenuItem
 from mahlzeit.date_utils import get_date_of_weekday
 from mahlzeit.date_utils import create_dish_for_week
 from mahlzeit.date_utils import german_days
-from mahlzeit.date_utils import get_current_week_number
+from mahlzeit.date_utils import get_current_day_week_number
 
 
 def extract_dish(row):
@@ -40,7 +40,7 @@ def parse_week_number(response):
         week_number = int(re.sub(exp2, '', extract1))
         return week_number
     # if does not work return the current week
-    return get_current_week_number()
+    return get_current_day_week_number()
 
 
 class AlbertSpider(scrapy.Spider):

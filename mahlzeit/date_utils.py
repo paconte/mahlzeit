@@ -36,6 +36,7 @@ def create_dish_for_week(location, business, dish, date=None, ingredients=list()
         result.append(item)
     return result
 
+
 def get_date(date, weekday):
     day = weekday.lower()
     if day not in german_days:
@@ -102,5 +103,14 @@ def get_today_midnight():
     return datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
 
 
-def get_current_week_number():
-    return datetime.today().isocalendar()[1]
+def get_current_day_week_number(week_delta=0):
+    """
+    Returns an integer with the current week number of a year.
+    :param week_delta: the week difference to add or subtract
+    :return: integer
+    """
+    return (datetime.today() + timedelta(weeks=week_delta)).isocalendar()[1]
+
+
+def get_current_weekday_number():
+    return datetime.today().weekday()

@@ -2,7 +2,7 @@ import scrapy
 import re
 from datetime import datetime
 from mahlzeit.date_utils import create_dish_for_week
-from mahlzeit.date_utils import get_current_week_number
+from mahlzeit.date_utils import get_current_day_week_number
 from mahlzeit.date_utils import get_date_of_weekday
 
 
@@ -22,7 +22,7 @@ def parse_week_number(response):
         date = datetime.strptime(extracted_date, "%d.%m.%y")
         result = date.isocalendar()[1]
     except ValueError:
-        result = get_current_week_number()
+        result = get_current_day_week_number()
     return result
 
 
