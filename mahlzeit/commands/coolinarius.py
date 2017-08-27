@@ -23,14 +23,10 @@ www.cook-berlin.de/mittagstisch/
 """
 import os
 import smtplib
+import mahlzeit.db_utils as db
 from scrapy.commands import ScrapyCommand
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
-from mahlzeit.db_utils import count_lunches
-from mahlzeit.db_utils import get_week_lunches_mongodb
-from mahlzeit.db_utils import print_cursor_to_file
-
-
 from email.mime.text import MIMEText
 
 
@@ -58,10 +54,12 @@ class Command(ScrapyCommand):
         return 'Runs all the production ready spiders of coolinarius'
 
     def run(self, args, opts):
+        # create database backup
+        db.create_mongodb_backup()
+
         # save size of log file and number of items at the db
         log_size_init = get_file_size(log_file)
-        db_items_init = count_lunches()
-
+        db_items_init = db.count_lunches(db.get_current_week_lunches_mongodb())
         # crawl and insert in the db
         for spider_name in spider_list:
             process.crawl(spider_name)
@@ -69,17 +67,18 @@ class Command(ScrapyCommand):
 
         # save new sizes of log file and items at the db
         log_size_end = get_file_size(log_file)
-        db_items_end = count_lunches()
+        db_items_end = db.count_lunches(db.get_current_week_lunches_mongodb())
 
         # if the log file has new entries send an email to notify
         if log_size_init < log_size_end:
             send_email(self.email_from, self.email_to)
 
-        # if there are new lunch menues in the db then create new json file for front end
+        # create new file
+        db.print_cursor_to_file(db.get_current_week_lunches_mongodb(), settings.get('FRONTEND_FILE'), True)
+
         if db_items_end > db_items_init:
+            # deploy new version
             pass
-        else:
-            print_cursor_to_file(get_week_lunches_mongodb(), './lunches.json', True)
 
 
 def get_file_size(filename):

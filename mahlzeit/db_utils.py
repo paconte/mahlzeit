@@ -1,4 +1,7 @@
+import logging
 import pymongo
+from datetime import datetime
+from subprocess import run
 from bson.json_util import dumps
 from scrapy.conf import settings
 from mahlzeit.date_utils import get_today_midnight
@@ -6,11 +9,9 @@ from mahlzeit.date_utils import get_date_of_weekday
 from mahlzeit.date_utils import get_current_day_week_number
 from mahlzeit.date_utils import get_current_weekday_number
 
-
-client = pymongo.MongoClient('localhost', 27017)
 connection = pymongo.MongoClient(settings['MONGODB_SERVER'], settings['MONGODB_PORT'])
-db = connection[settings['MONGODB_DB']]
-collection = db[settings['MONGODB_COLLECTION']]
+database = connection[settings['MONGODB_DB']]
+collection = database[settings['MONGODB_COLLECTION']]
 
 
 def print_cursor_to_file(cursor, dst, variable=False):
@@ -65,18 +66,27 @@ def insert_mongodb(item):
         for record in records:
             if record['dish'] != item['dish']:
                 # log
-                print('WRONG WEEK???')
-                pass
+                logging.warning('Item found in future week (%d) for business (%s) during weekend => new lunch plan??',
+                                item['date'], item['business'])
+
     # item is in a future week
     elif item['date'].isocalendar()[1] > current_week:
-        print('NEXT WEEK')
-        pass
+        logging.warning('Item found in future week (%d) for business (%s)', item['date'], item['business'])
     else:
         try:
             collection.insert(dict(item))
         except pymongo.errors.DuplicateKeyError:
             pass
 
+
+def create_mongodb_backup():
+    """
+    Creates a backup for the lunch collection, it is like calling the below command at the shell:
+    mongoexport -h  localhost -p  27017 -d  coolinarius -c  lunch -o  lunch_backup.json
+    """
+    run(["mongoexport",
+         "-h", settings['MONGODB_SERVER'], "-d", settings['MONGODB_DB'], "-c", settings['MONGODB_COLLECTION'],
+         "-o", settings['MONGODB_COLLECTION_BACKUP'] + '-' + str(datetime.now()).replace(' ', '-')])
 
 
 # db.lunch.createIndex( { date: 1, location: 1, business: 1 , dish: 1}, { unique: true } )
