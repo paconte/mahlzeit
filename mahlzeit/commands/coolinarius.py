@@ -21,13 +21,14 @@ http://www.paris-moskau.de/sites/restaurant_paris_moskau_kontakt.htm
 weißensee:
 www.cook-berlin.de/mittagstisch/
 """
-import os
-import smtplib
 import mahlzeit.db_utils as db
+from datetime import datetime
+from subprocess import run
 from scrapy.commands import ScrapyCommand
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
-from email.mime.text import MIMEText
+from mahlzeit.utils import get_file_size
+from mahlzeit.utils import send_email
 
 
 settings = get_project_settings()
@@ -73,24 +74,12 @@ class Command(ScrapyCommand):
         if log_size_init < log_size_end:
             send_email(self.email_from, self.email_to)
 
-        # create new file
-        db.print_cursor_to_file(db.get_current_week_lunches_mongodb(), settings.get('FRONTEND_FILE'), True)
+        # create new frontend file
+        filename = settings.get('FRONTEND_FILE') + '-' + str(datetime.now()).replace(' ', '-')
+        db.print_cursor_to_file(db.get_current_week_lunches_mongodb(), filename, True)
+        run(['cp', filename, settings.get('FRONTEND_FILE')])
 
         if db_items_end > db_items_init:
             # deploy new version
             pass
 
-
-def get_file_size(filename):
-    return os.stat(filename).st_size
-
-
-def send_email(email_from, email_to):
-    with open(log_file, 'rt') as fp:
-        msg = MIMEText(fp.read())
-    msg['Subject'] = 'Exceptions while crawling coolinarius.'
-    msg['From'] = email_from
-    msg['To'] = email_to
-    server = smtplib.SMTP('localhost')
-    server.sendmail(email_from, [email_to], msg.as_string())
-    server.quit()

@@ -1,16 +1,39 @@
 """
 This file has some utils to work with files
 """
-import sys, getopt
-import pandas as pd
+import getopt
 import json
+import os
+import sys
+import pandas as pd
+import smtplib
+from email.mime.text import MIMEText
+from scrapy.utils.project import get_project_settings
 
+
+settings = get_project_settings()
+log_file = settings.get('LOG_FILE')
 ingredients = ['vegan', 'vegetarian', 'fish']
 
 
 def print_array(array):
     for x in array:
         print(x)
+
+
+def get_file_size(filename):
+    return os.stat(filename).st_size
+
+
+def send_email(email_from, email_to):
+    with open(log_file, 'rt') as fp:
+        msg = MIMEText(fp.read())
+    msg['Subject'] = 'Exceptions while crawling coolinarius.'
+    msg['From'] = email_from
+    msg['To'] = email_to
+    server = smtplib.SMTP('localhost')
+    server.sendmail(email_from, [email_to], msg.as_string())
+    server.quit()
 
 
 def _create_ingredients(string):
@@ -70,9 +93,6 @@ def make_json_pipeline_output_javascript_friendly(src_file, dst_file):
         dst.write(output)
         dst.write('\';\nconst products = JSON.parse(productsAux);\n')
         dst.write('export default products;\n')
-
-
-# csv_to_json('./data.csv', './test.js')
 
 
 def main(argv):
