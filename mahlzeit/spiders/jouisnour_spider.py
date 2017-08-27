@@ -5,7 +5,7 @@ from dateutil.parser import parse
 
 class JouisNourSpider(CSVFeedSpider):
     name = "jouisnour"
-    start_urls = ['file:///home/frevilla/devel/scrapy/mahlzeit/data/jouisnour.csv']
+    start_urls = ['file:///home/frevilla/devel/scrapy/mahlzeit/data/import/jouisnour.csv']
     headers = ['date', 'location', 'business', 'price', 'type', 'name']
     delimiter = ';'
     coordinates = [(52.432440, 13.534732)]

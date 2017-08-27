@@ -16,8 +16,19 @@ NEWSPIDER_MODULE = 'mahlzeit.spiders'
 LOG_LEVEL = 'WARNING'
 DATA_FILES = 'data/'
 EXPORT_FILES = DATA_FILES + 'export/'
+BACKUP_FILES = DATA_FILES + 'backup/'
+IMPORT_FILES = DATA_FILES + 'import/'
+FRONTEND_FILES = DATA_FILES + 'frontend/'
 LOG_FILE = DATA_FILES + "log/log-mahlzeit.log"
 COMMANDS_MODULE = 'mahlzeit.commands'
+MONGODB_SERVER = "localhost"
+MONGODB_PORT = 27017
+MONGODB_DB = "coolinarius"
+#MONGODB_COLLECTION = "lunch"
+MONGODB_COLLECTION = "lunch_test1"
+MONGODB_COLLECTION_BACKUP = BACKUP_FILES + "lunch_backup.json"
+FRONTEND_FILE = FRONTEND_FILES + "lunches.json"
+
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'mahlzeit (+http://www.yourdomain.com)'
@@ -73,11 +84,6 @@ ITEM_PIPELINES = {
     'mahlzeit.pipelines.CsvExportPipeline': 400,
     'mahlzeit.pipelines.MongoDBPipeline': 500,
 }
-MONGODB_SERVER = "localhost"
-MONGODB_PORT = 27017
-MONGODB_DB = "coolinarius"
-MONGODB_COLLECTION = "lunch"
-
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
