@@ -14,7 +14,7 @@ database = connection[settings['MONGODB_DB']]
 collection = database[settings['MONGODB_COLLECTION']]
 
 
-def print_cursor_to_file(cursor, dst, variable=False):
+def print_cursor_to_javascript_file(cursor, dst, variable=False):
     obj = dumps(cursor)
     with open(dst, "w") as fp:
         if variable:
@@ -71,7 +71,7 @@ def insert_mongodb(item):
 
     # item is in a future week
     elif item['date'].isocalendar()[1] > current_week:
-        logging.warning('Item found in future week (%d) for business (%s)', item['date'], item['business'])
+        logging.warning('Item found in future week (%d) for business (%s)', item['date'].isocalendar()[1], item['business'])
     else:
         try:
             collection.insert(dict(item))
