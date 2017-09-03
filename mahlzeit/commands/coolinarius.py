@@ -41,6 +41,12 @@ spider_list = [
     'suppencult']
 
 
+def deploy_in_production():
+    run(['cp', settings.get('FRONTEND_FILE'), settings.get('VUEJS_LUNCH_FILE')])
+    deploy_script = settings.get('VUEJS_DEPLOY_SCRIPT')
+    run(['sh', deploy_script])
+
+
 class Command(ScrapyCommand):
 
     requires_project = True
@@ -54,7 +60,19 @@ class Command(ScrapyCommand):
     def short_desc(self):
         return 'Runs all the production ready spiders of coolinarius'
 
+    def add_options(self, parser):
+        ScrapyCommand.add_options(self, parser)
+        parser.add_option("--deploy", dest="deploy", default=False, action="store_true", help="deploy in to production")
+        parser.add_option("--force-deploy", dest="force_deploy", default=False, action="store_true",
+                          help="force deploy in to production")
+        parser.add_option("--only-deploy", dest="only_deploy", default=False, action="store_true",
+                          help="Deploy in to production last status without crawling")
+
     def run(self, args, opts):
+        if opts.only_deploy:
+            deploy_in_production()
+            return
+
         # create database backup
         db.create_mongodb_backup()
 
@@ -76,10 +94,12 @@ class Command(ScrapyCommand):
 
         # create new frontend file
         filename = settings.get('FRONTEND_FILE') + '-' + str(datetime.now()).replace(' ', '-')
-        db.print_cursor_to_file(db.get_current_week_lunches_mongodb(), filename, True)
+        db.print_cursor_to_javascript_file(db.get_current_week_lunches_mongodb(), filename, True)
         run(['cp', filename, settings.get('FRONTEND_FILE')])
+        if opts.deploy and db_items_end > db_items_init:
+            deploy_in_production()
+        elif opts.force_deploy:
+            deploy_in_production()
 
-        if db_items_end > db_items_init:
-            # deploy new version
-            pass
+
 

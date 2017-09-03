@@ -28,6 +28,9 @@ MONGODB_DB = "coolinarius"
 MONGODB_COLLECTION = "lunch_test1"
 MONGODB_COLLECTION_BACKUP = BACKUP_FILES + "lunch_backup.json"
 FRONTEND_FILE = FRONTEND_FILES + "lunches.json"
+VUEJS_PATH = "/home/frevilla/devel/culinarius/"
+VUEJS_LUNCH_FILE = VUEJS_PATH + "src/test.js"
+VUEJS_DEPLOY_SCRIPT = VUEJS_PATH + "prepare_deploy_script.sh"
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
