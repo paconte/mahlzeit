@@ -16,10 +16,12 @@ from mahlzeit.db_utils import insert_mongodb
 def get_filename(file_type):
     pipeline_directory = settings.get('EXPORT_FILES')
     date = datetime.today()
+    time_format = "%Y-%m-%d-%H:%M:%S"
+    filename = 'mahlzeit'
     if file_type == 'csv':
-        result = pipeline_directory + 'mahlzeit-%s.csv' % date.strftime("%Y-%m-%d")
+        result = pipeline_directory + filename + '-%s.csv' % date.strftime(time_format)
     elif file_type == 'json':
-        result = pipeline_directory + 'mahlzeit-%s.json' % date.strftime("%Y-%m-%d")
+        result = pipeline_directory + filename + '-%s.json' % date.strftime(time_format)
     else:
         raise AttributeError('Wrong argument %s' % file_type)
     return result
