@@ -1,7 +1,7 @@
 import logging
 import pymongo
 from datetime import datetime
-from subprocess import run
+from subprocess import call
 from bson.json_util import dumps
 from scrapy.conf import settings
 from mahlzeit.date_utils import get_today_midnight
@@ -71,7 +71,10 @@ def insert_mongodb(item):
 
     # item is in a future week
     elif item['date'].isocalendar()[1] > current_week:
-        logging.warning('Item found in future week (%d) for business (%s)', item['date'].isocalendar()[1], item['business'])
+        if item['business'] in settings['CSV_ITEM_NAMES']:
+            pass
+        else:
+            logging.warning('Item found in future week (%d) for business (%s)', item['date'].isocalendar()[1], item['business'])
     else:
         try:
             collection.insert(dict(item))
@@ -84,7 +87,7 @@ def create_mongodb_backup():
     Creates a backup for the lunch collection, it is like calling the below command at the shell:
     mongoexport -h  localhost -p  27017 -d  coolinarius -c  lunch -o  lunch_backup.json
     """
-    run(["mongoexport",
+    call(["mongoexport",
          "-h", settings['MONGODB_SERVER'], "-d", settings['MONGODB_DB'], "-c", settings['MONGODB_COLLECTION'],
          "-o", settings['MONGODB_COLLECTION_BACKUP'] + '-' + str(datetime.now()).replace(' ', '-')])
 
