@@ -31,7 +31,7 @@ FRONTEND_FILE = FRONTEND_FILES + "lunches.json"
 VUEJS_PATH = "/home/frevilla/devel/culinarius/"
 VUEJS_LUNCH_FILE = VUEJS_PATH + "src/test.js"
 VUEJS_DEPLOY_SCRIPT = VUEJS_PATH + "prepare_deploy_script.sh"
-
+CSV_ITEM_NAMES = ['Jouis Nour', 'FOOD']
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'mahlzeit (+http://www.yourdomain.com)'
