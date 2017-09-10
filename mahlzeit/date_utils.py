@@ -114,3 +114,7 @@ def get_current_day_week_number(week_delta=0):
 
 def get_current_weekday_number():
     return datetime.today().weekday()
+
+
+def is_weekend():
+    return get_current_weekday_number() > 4

@@ -29,6 +29,7 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from mahlzeit.utils import get_file_size
 from mahlzeit.utils import send_email
+from mahlzeit.date_utils import is_weekend
 
 
 settings = get_project_settings()
@@ -80,7 +81,10 @@ class Command(ScrapyCommand):
         db_items_init = db.count_lunches(db.get_current_week_lunches_mongodb())
         # crawl and insert in the db
         for spider_name in spider_list:
-            process.crawl(spider_name)
+            try:
+                process.crawl(spider_name)
+            except Exception:
+                pass
         process.start()
 
         # save new sizes of log file and items at the db
@@ -93,7 +97,10 @@ class Command(ScrapyCommand):
 
         # create new frontend file
         filename = settings.get('FRONTEND_FILE') + '-' + str(datetime.now()).replace(' ', '-')
-        db.print_cursor_to_javascript_file(db.get_current_week_lunches_mongodb(), filename, True)
+        if is_weekend():
+            db.print_cursor_to_javascript_file(db.get_next_week_lunches_mongodb(), filename, True)
+        else:
+            db.print_cursor_to_javascript_file(db.get_current_week_lunches_mongodb(), filename, True)
         call(['cp', filename, settings.get('FRONTEND_FILE')])
         if opts.deploy and db_items_end > db_items_init:
             deploy_in_production()

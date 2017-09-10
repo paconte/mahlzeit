@@ -1,13 +1,15 @@
 import logging
 import pymongo
 from datetime import datetime
+from datetime import timedelta
 from subprocess import call
 from bson.json_util import dumps
 from scrapy.conf import settings
 from mahlzeit.date_utils import get_today_midnight
 from mahlzeit.date_utils import get_date_of_weekday
 from mahlzeit.date_utils import get_current_day_week_number
-from mahlzeit.date_utils import get_current_weekday_number
+from mahlzeit.date_utils import is_weekend
+from mahlzeit.date_utils import get_monday_date
 
 connection = pymongo.MongoClient(settings['MONGODB_SERVER'], settings['MONGODB_PORT'])
 database = connection[settings['MONGODB_DB']]
@@ -36,21 +38,30 @@ def count_lunches(lunches, list_business=None, weekday_start=None):
     return result
 
 
+def get_next_week_lunches_mongodb():
+    start_date = get_monday_date(1)
+    end_date = start_date + timedelta(days=6, hours=23)
+    result = collection.find({"date": {"$gte": start_date, "$lte": end_date}})
+    print(start_date, end_date, result.count())
+    return result
+
+
 def get_current_week_lunches_mongodb(list_business=None, weekday_start=None):
     # calculate start and finish date
     if not weekday_start:
         start_date = get_today_midnight()
     else:
         start_date = get_date_of_weekday('monday')
-    finish_date = get_date_of_weekday('friday')
+    end_date = get_date_of_weekday('friday')
     # perform query
     if list_business:
         result = dict()
         for business in list_business:
             result[business] = collection.find({"business": business,
-                                                "date": {"$gte": start_date, "$lte": finish_date}})
+                                                "date": {"$gte": start_date, "$lte": end_date}})
+            print(business, start_date, end_date)
     else:
-        result = collection.find({"date": {"$gte": start_date, "$lte": finish_date}})
+        result = collection.find({"date": {"$gte": start_date, "$lte": end_date}})
     return result
 
 
@@ -60,11 +71,18 @@ def insert_mongodb(item):
     records = get_current_week_lunches_mongodb(list_business)
     counts = count_lunches(records, list_business)
     current_week = get_current_day_week_number()
+    insert = False
 
     # item is from current week and db has already items for this week
-    if counts[item['business']] > 0 and get_current_weekday_number() > 4:
-        for record in records:
+    # print(counts, item['business'], counts[item['business']])
+    print(item['business'])
+    if item['date'].isocalendar()[1] == current_week:
+        cursor = records[item['business']]
+        print(cursor.count())
+        for record in cursor:
+            print(record)
             if record['dish'] != item['dish']:
+                print(item)
                 # log
                 logging.warning('Item found in future week (%d) for business (%s) during weekend => new lunch plan??',
                                 item['date'], item['business'])
@@ -72,11 +90,19 @@ def insert_mongodb(item):
     # item is in a future week
     elif item['date'].isocalendar()[1] > current_week:
         if item['business'] in settings['CSV_ITEM_NAMES']:
-            pass
+            insert = True
+        # is weekend and item in next week
+        elif is_weekend() \
+                and item['date'].isocalendar()[1] == current_week + 1:
+            insert = True
         else:
-            logging.warning('Item found in future week (%d) for business (%s)', item['date'].isocalendar()[1],
+            logging.warning('Item found in future week (%d) for business (%s)',
+                            item['date'].isocalendar()[1],
                             item['business'])
     else:
+        insert = True
+
+    if insert:
         try:
             collection.insert(dict(item))
         except pymongo.errors.DuplicateKeyError:
