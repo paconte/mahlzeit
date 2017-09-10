@@ -23,7 +23,7 @@ www.cook-berlin.de/mittagstisch/
 """
 import mahlzeit.db_utils as db
 from datetime import datetime
-from subprocess import run
+from subprocess import call
 from scrapy.commands import ScrapyCommand
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
@@ -42,9 +42,9 @@ spider_list = [
 
 
 def deploy_in_production():
-    run(['cp', settings.get('FRONTEND_FILE'), settings.get('VUEJS_LUNCH_FILE')])
+    call(['cp', settings.get('FRONTEND_FILE'), settings.get('VUEJS_LUNCH_FILE')])
     deploy_script = settings.get('VUEJS_DEPLOY_SCRIPT')
-    run(['sh', deploy_script])
+    call(['sh', deploy_script])
 
 
 class Command(ScrapyCommand):
@@ -62,17 +62,16 @@ class Command(ScrapyCommand):
 
     def add_options(self, parser):
         ScrapyCommand.add_options(self, parser)
+        parser.add_option("--run", dest="run", default=False, action="store_true", help="run all coolinarius crawlers")
         parser.add_option("--deploy", dest="deploy", default=False, action="store_true", help="deploy in to production")
         parser.add_option("--force-deploy", dest="force_deploy", default=False, action="store_true",
                           help="force deploy in to production")
         parser.add_option("--only-deploy", dest="only_deploy", default=False, action="store_true",
                           help="Deploy in to production last status without crawling")
+        parser.add_option("--db-new-collection", dest="new_collection", default=False, action="store_true",
+                          help="Drop lunch collections and creates a new one")
 
-    def run(self, args, opts):
-        if opts.only_deploy:
-            deploy_in_production()
-            return
-
+    def run_crawlers(self, opts):
         # create database backup
         db.create_mongodb_backup()
 
@@ -95,11 +94,20 @@ class Command(ScrapyCommand):
         # create new frontend file
         filename = settings.get('FRONTEND_FILE') + '-' + str(datetime.now()).replace(' ', '-')
         db.print_cursor_to_javascript_file(db.get_current_week_lunches_mongodb(), filename, True)
-        run(['cp', filename, settings.get('FRONTEND_FILE')])
+        call(['cp', filename, settings.get('FRONTEND_FILE')])
         if opts.deploy and db_items_end > db_items_init:
             deploy_in_production()
         elif opts.force_deploy:
             deploy_in_production()
 
+    def run(self, args, opts):
+        if opts.only_deploy:
+            deploy_in_production()
+        elif opts.run:
+            self.run_crawlers(opts)
+        elif opts.new_collection:
+            db.create_collection()
+        else:
+            print("Wrong arguments")
 
 

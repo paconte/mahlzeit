@@ -74,7 +74,8 @@ def insert_mongodb(item):
         if item['business'] in settings['CSV_ITEM_NAMES']:
             pass
         else:
-            logging.warning('Item found in future week (%d) for business (%s)', item['date'].isocalendar()[1], item['business'])
+            logging.warning('Item found in future week (%d) for business (%s)', item['date'].isocalendar()[1],
+                            item['business'])
     else:
         try:
             collection.insert(dict(item))
@@ -88,8 +89,21 @@ def create_mongodb_backup():
     mongoexport -h  localhost -p  27017 -d  coolinarius -c  lunch -o  lunch_backup.json
     """
     call(["mongoexport",
-         "-h", settings['MONGODB_SERVER'], "-d", settings['MONGODB_DB'], "-c", settings['MONGODB_COLLECTION'],
-         "-o", settings['MONGODB_COLLECTION_BACKUP'] + '-' + str(datetime.now()).replace(' ', '-')])
+          "-h", settings['MONGODB_SERVER'], "-d", settings['MONGODB_DB'], "-c", settings['MONGODB_COLLECTION'],
+          "-o", settings['MONGODB_COLLECTION_BACKUP'] + '-' + str(datetime.now()).replace(' ', '-')])
 
 
-# db.lunch.createIndex( { date: 1, location: 1, business: 1 , dish: 1}, { unique: true } )
+def drop_collection():
+    create_mongodb_backup()
+    command = "db." + settings['MONGODB_DB'] + ".drop()"
+    print("[COOL] Executing command: \n[COOL] %s" % command)
+    call(["mongo", settings['MONGODB_DB'], "--eval", command])
+
+
+def create_collection():
+    # db.lunch.createIndex( { date: 1, location: 1, business: 1 , dish: 1}, { unique: true } )
+    drop_collection()
+    command = "db." + settings['MONGODB_COLLECTION'] + \
+              '.createIndex( { date: 1, location: 1, business: 1 , dish: 1}, { unique: true } )'
+    print("[COOL] Executing command: \n[COOL] %s" % command)
+    call(["mongo", settings['MONGODB_DB'], "--eval", command])
