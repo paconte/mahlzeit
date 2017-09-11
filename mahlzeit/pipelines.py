@@ -13,18 +13,12 @@ from scrapy.conf import settings
 from mahlzeit.db_utils import insert_mongodb
 
 
-def get_filename(file_type):
+def get_filename():
     pipeline_directory = settings.get('EXPORT_FILES')
     date = datetime.today()
     time_format = "%Y-%m-%d-%H:%M:%S"
     filename = 'mahlzeit'
-    if file_type == 'csv':
-        result = pipeline_directory + filename + '-%s.csv' % date.strftime(time_format)
-    elif file_type == 'json':
-        result = pipeline_directory + filename + '-%s.json' % date.strftime(time_format)
-    else:
-        raise AttributeError('Wrong argument %s' % file_type)
-    return result
+    return pipeline_directory + filename + '-%s' % date.strftime(time_format)
 
 
 def clean_item_dish(dish):
@@ -65,10 +59,12 @@ def validate_menu_item(item):
         raise DropItem('Missing %s' % 'business')
 
 
+filename = get_filename()
+
+
 class JsonExportPipeline(object):
     def __init__(self):
-        filename = get_filename('json')
-        self.file = open(filename, 'ab')
+        self.file = open(filename + '.json', 'ab')
         self.exporter = JsonItemExporter(self.file, encoding='utf-8', ensure_ascii=False)
         self.exporter.start_exporting()
 
@@ -84,8 +80,7 @@ class JsonExportPipeline(object):
 
 class CsvExportPipeline(object):
     def __init__(self):
-        filename = get_filename('csv')
-        self.file = open(filename, 'ab')
+        self.file = open(filename + '.csv', 'ab')
         self.exporter = CsvItemExporter(self.file, encoding='utf-8', join_multivalued=';', quoting=csv.QUOTE_ALL)
         self.exporter.start_exporting()
 
