@@ -7,6 +7,7 @@ import os
 import sys
 import pandas as pd
 import smtplib
+import hashlib
 from email.mime.text import MIMEText
 from scrapy.utils.project import get_project_settings
 
@@ -14,6 +15,26 @@ from scrapy.utils.project import get_project_settings
 settings = get_project_settings()
 log_file = settings.get('LOG_FILE')
 ingredients = ['vegan', 'vegetarian', 'fish']
+
+
+def get_last_export_file(file_type='csv'):
+    directory = settings['EXPORT_FILES']
+    files = [f for f in os.listdir(directory) if 'mahlzeit' in f and file_type in f]
+    last_file = files[0]
+    for f in files[1:]:
+        stat1 = os.stat(directory + last_file).st_mtime
+        stat2 = os.stat(directory + f).st_mtime
+        if stat2 > stat1:
+            last_file = f
+    return directory + last_file
+
+
+def hash_file(filename):
+    hash_func = hashlib.md5()
+    with open(filename, 'rb') as f:
+        buf = f.read()
+        hash_func.update(buf)
+    return hash_func.hexdigest()
 
 
 def print_array(array):
