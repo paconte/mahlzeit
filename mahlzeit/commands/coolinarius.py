@@ -29,7 +29,6 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from mahlzeit.utils import get_file_size
 from mahlzeit.utils import send_email
-from mahlzeit.date_utils import is_weekend
 
 
 settings = get_project_settings()
@@ -64,6 +63,12 @@ class Command(ScrapyCommand):
     def add_options(self, parser):
         ScrapyCommand.add_options(self, parser)
         parser.add_option("--run", dest="run", default=False, action="store_true", help="run all coolinarius crawlers")
+        parser.add_option("--backup", dest="backup", default=False, action="store_true",
+                          help="Create database backup before inserting any item")
+        parser.add_option("--frontend", dest="frontend", default=False, action="store_true",
+                          help="Create file for frontend VUEJS")
+        parser.add_option("--email", dest="email", default=False, action="store_true",
+                          help="Send e-mail if log file is changed.")
         parser.add_option("--deploy", dest="deploy", default=False, action="store_true", help="deploy in to production")
         parser.add_option("--force-deploy", dest="force_deploy", default=False, action="store_true",
                           help="force deploy in to production")
@@ -74,17 +79,16 @@ class Command(ScrapyCommand):
 
     def run_crawlers(self, opts):
         # create database backup
-        db.create_mongodb_backup()
+        if opts.backup:
+            db.create_mongodb_backup()
 
         # save size of log file and number of items at the db
         log_size_init = get_file_size(log_file)
         db_items_init = db.count_lunches(db.get_current_week_lunches_mongodb())
+
         # crawl and insert in the db
         for spider_name in spider_list:
-            try:
-                process.crawl(spider_name)
-            except Exception:
-                pass
+            process.crawl(spider_name)
         process.start()
 
         # save new sizes of log file and items at the db
@@ -92,16 +96,18 @@ class Command(ScrapyCommand):
         db_items_end = db.count_lunches(db.get_current_week_lunches_mongodb())
 
         # if the log file has new entries send an email to notify
-        if log_size_init < log_size_end:
+        if opts.email and log_size_init < log_size_end:
             send_email(self.email_from, self.email_to)
 
         # create new frontend file
-        filename = settings.get('FRONTEND_FILE') + '-' + str(datetime.now()).replace(' ', '-')
-        if is_weekend():
-            db.print_cursor_to_javascript_file(db.get_next_week_lunches_mongodb(), filename, True)
-        else:
-            db.print_cursor_to_javascript_file(db.get_current_week_lunches_mongodb(), filename, True)
-        call(['cp', filename, settings.get('FRONTEND_FILE')])
+        if opts.frontend:
+            filename = settings.get('FRONTEND_FILE') + '-' + str(datetime.now()).replace(' ', '-')
+            cursor = db.get_current_week_lunches_mongodb()
+            print(str(cursor.count()) + ' item(s) exported to frontend.')
+            db.print_cursor_to_javascript_file(cursor, filename, True)
+            call(['cp', filename, settings.get('FRONTEND_FILE')])
+
+        # deploy into production
         if opts.deploy and db_items_end > db_items_init:
             deploy_in_production()
         elif opts.force_deploy:

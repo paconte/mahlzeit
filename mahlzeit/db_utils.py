@@ -42,7 +42,6 @@ def get_next_week_lunches_mongodb():
     start_date = get_monday_date(1)
     end_date = start_date + timedelta(days=6, hours=23)
     result = collection.find({"date": {"$gte": start_date, "$lte": end_date}})
-    print(start_date, end_date, result.count())
     return result
 
 
@@ -59,9 +58,9 @@ def get_current_week_lunches_mongodb(list_business=None, weekday_start=None):
         for business in list_business:
             result[business] = collection.find({"business": business,
                                                 "date": {"$gte": start_date, "$lte": end_date}})
-            print(business, start_date, end_date)
     else:
         result = collection.find({"date": {"$gte": start_date, "$lte": end_date}})
+        # result = collection.find({"date": {"$gte": start_date}})
     return result
 
 
@@ -69,36 +68,19 @@ def insert_mongodb(item):
     list_business = list()
     list_business.append(item['business'])
     records = get_current_week_lunches_mongodb(list_business)
-    counts = count_lunches(records, list_business)
     current_week = get_current_day_week_number()
     insert = False
 
-    # item is from current week and db has already items for this week
-    # print(counts, item['business'], counts[item['business']])
-    print(item['business'])
-    if item['date'].isocalendar()[1] == current_week:
+    # item belongs to next week but date is wrong
+    if is_weekend() and item['date'].isocalendar()[1] == current_week:
+        not_found = False
         cursor = records[item['business']]
-        print(cursor.count())
         for record in cursor:
-            print(record)
             if record['dish'] != item['dish']:
-                print(item)
-                # log
-                logging.warning('Item found in future week (%d) for business (%s) during weekend => new lunch plan??',
-                                item['date'], item['business'])
-
-    # item is in a future week
-    elif item['date'].isocalendar()[1] > current_week:
-        if item['business'] in settings['CSV_ITEM_NAMES']:
+                not_found = True
+        if not_found:
+            item['date'] = item['date'] + timedelta(weeks=1)
             insert = True
-        # is weekend and item in next week
-        elif is_weekend() \
-                and item['date'].isocalendar()[1] == current_week + 1:
-            insert = True
-        else:
-            logging.warning('Item found in future week (%d) for business (%s)',
-                            item['date'].isocalendar()[1],
-                            item['business'])
     else:
         insert = True
 
