@@ -65,6 +65,8 @@ class Command(ScrapyCommand):
         parser.add_option("--run", dest="run", default=False, action="store_true", help="run all coolinarius crawlers")
         parser.add_option("--backup", dest="backup", default=False, action="store_true",
                           help="Create database backup before inserting any item")
+        parser.add_option("--import", type=str, dest="import_collection",
+                          help="Import a collection of lunches from a file to the database")
         parser.add_option("--frontend", dest="frontend", default=False, action="store_true",
                           help="Create file for frontend VUEJS")
         parser.add_option("--email", dest="email", default=False, action="store_true",
@@ -78,10 +80,6 @@ class Command(ScrapyCommand):
                           help="Drop lunch collections and creates a new one")
 
     def run_crawlers(self, opts):
-        # create database backup
-        if opts.backup:
-            db.create_mongodb_backup()
-
         # save size of log file and number of items at the db
         log_size_init = get_file_size(log_file)
         db_items_init = db.count_lunches(db.get_current_week_lunches_mongodb())
@@ -116,11 +114,18 @@ class Command(ScrapyCommand):
     def run(self, args, opts):
         if opts.only_deploy:
             deploy_in_production()
-        elif opts.run:
-            self.run_crawlers(opts)
-        elif opts.new_collection:
+            return
+        if opts.new_collection:
             db.create_collection()
-        else:
-            print("Wrong arguments")
+            return
+        if opts.import_collection:
+            print("Importing file %s into collection lunch." % opts.import_collection)
+            db.import_lunches(opts.import_collection)
+            return
+        if opts.backup:
+            db.export_lunches()
+        if opts.run:
+            self.run_crawlers(opts)
+            return
 
 

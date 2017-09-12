@@ -91,7 +91,7 @@ def insert_mongodb(item):
             pass
 
 
-def create_mongodb_backup():
+def export_lunches():
     """
     Creates a backup for the lunch collection, it is like calling the below command at the shell:
     mongoexport -h  localhost -p  27017 -d  coolinarius -c  lunch -o  lunch_backup.json
@@ -101,8 +101,19 @@ def create_mongodb_backup():
           "-o", settings['MONGODB_COLLECTION_BACKUP'] + '-' + str(datetime.now()).replace(' ', '-')])
 
 
+def import_lunches(filename):
+    """
+    Import the filename in to the lunch collection.
+    mongoimport -h  localhost -p 27017 -d  coolinarius -c lunch -file filename
+    :param filename: the file to import
+    """
+    call(["mongoimport",
+          "-h", settings['MONGODB_SERVER'], "-d", settings['MONGODB_DB'], "-c", settings['MONGODB_COLLECTION'],
+          "--file", filename])
+
+
 def drop_collection():
-    create_mongodb_backup()
+    export_lunches()
     command = "db." + settings['MONGODB_DB'] + ".drop()"
     print("[COOL] Executing command: \n[COOL] %s" % command)
     call(["mongo", settings['MONGODB_DB'], "--eval", command])
