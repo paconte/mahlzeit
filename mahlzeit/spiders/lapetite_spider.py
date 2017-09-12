@@ -21,6 +21,8 @@ def prepare_text(filename):
         filedata = filedata.replace('Euro ', 'euros\n')
         filedata = filedata.replace('EURO', 'euros\n')
         filedata = filedata.replace('Euro', 'euros\n')
+        filedata = filedata.replace('€ ', 'euros\n')
+        filedata = filedata.replace('€', 'euros\n')
     # write file data
     with open(filename, 'w') as file:
         file.write(filedata)
@@ -36,7 +38,7 @@ def extract_idxs(filename):
     return idxs
 
 
-def extract_info(location, business, idx1, idx2, text):
+def extract_info(location, business, idx1, idx2, text, single_day=None):
     exp1 = re.compile(r'\((.*)\)')
     dish = ''
     for i in range(idx1, idx2):
@@ -45,6 +47,7 @@ def extract_info(location, business, idx1, idx2, text):
             lower_line = text[i].lower()
             if lower_line.find(day) > -1:
                 ignore = True
+                single_day = day
         if i != idx1 and not ignore:
             dish += text[i].replace('\n', ' ')
 
@@ -56,7 +59,14 @@ def extract_info(location, business, idx1, idx2, text):
     price = price.replace('\n', '')
     date = get_date_of_weekday('monday')
     ingredients = list()
-    return create_dish_for_week(location, business, dish, date, ingredients, price)
+    if single_day:
+        from mahlzeit.items import MenuItem
+        from mahlzeit.date_utils import get_date
+        item = MenuItem(location=location, business=business, dish=dish, date=get_date(date, single_day),
+                        ingredients=ingredients, price=price)
+        return [item], single_day
+    else:
+        return create_dish_for_week(location, business, dish, date, ingredients, price), None
 
 
 class LaPetiteSpider(scrapy.Spider):
@@ -76,6 +86,7 @@ class LaPetiteSpider(scrapy.Spider):
         # extract key idexes of text
         idxs = extract_idxs(filename)
         # extract info
+        single_day = None
         with open(filename, 'r') as f:
             text = f.readlines()
         for i in range(len(idxs)):
@@ -84,5 +95,6 @@ class LaPetiteSpider(scrapy.Spider):
                 idx2 = idxs[i+1]
             except IndexError:
                 break
-            items.extend(extract_info(self.location, self.business, idx1, idx2, text))
+            info, single_day = extract_info(self.location, self.business, idx1, idx2, text, single_day)
+            items.extend(info)
         return items
