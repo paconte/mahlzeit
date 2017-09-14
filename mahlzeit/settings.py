@@ -27,9 +27,11 @@ MONGODB_DB = "coolinarius"
 MONGODB_COLLECTION = "lunch"
 #MONGODB_COLLECTION = "lunch_test1"
 MONGODB_COLLECTION_BACKUP = BACKUP_FILES + "lunch_backup.json"
-FRONTEND_FILE = FRONTEND_FILES + "lunches.json"
+FRONTEND_LUNCHES = FRONTEND_FILES + "lunches.json"
+FRONTEND_COORDINATES = FRONTEND_FILES + "coordinates.json"
 VUEJS_PATH = "/home/frevilla/devel/culinarius/"
-VUEJS_LUNCH_FILE = VUEJS_PATH + "src/test.js"
+VUEJS_LUNCH_FILE = VUEJS_PATH + "src/lunches.js"
+VUEJS_COORDINATES_FILE = VUEJS_PATH + "src/coordinates.js"
 VUEJS_DEPLOY_SCRIPT = VUEJS_PATH + "prepare_deploy_script.sh"
 CSV_ITEM_NAMES = ['Jouis Nour', 'FOOD']
 
