@@ -41,8 +41,22 @@ spider_list = [
     'suppencult']
 
 
+def create_frontend_files():
+    lunches_file = settings.get('FRONTEND_LUNCHES') + '-' + str(datetime.now()).replace(' ', '-')
+    cursor = db.get_current_week_lunches_mongodb()
+    print(str(cursor.count()) + ' item(s) exported to frontend.')
+    db.print_cursor_to_javascript_file(cursor, lunches_file, True)
+    call(['cp', lunches_file, settings.get('FRONTEND_LUNCHES')])
+    db.print_coordinates(settings.get('FRONTEND_COORDINATES'))
+
+
 def deploy_in_production():
-    call(['cp', settings.get('FRONTEND_FILE'), settings.get('VUEJS_LUNCH_FILE')])
+    # create new frontend files
+    create_frontend_files()
+    # copy files to VUEJS
+    call(['cp', settings.get('FRONTEND_LUNCHES'), settings.get('VUEJS_LUNCH_FILE')])
+    call(['cp', settings.get('FRONTEND_COORDINATES'), settings.get('VUEJS_COORDINATES_FILE')])
+    # call deploy script
     deploy_script = settings.get('VUEJS_DEPLOY_SCRIPT')
     call(['sh', deploy_script])
 
@@ -97,14 +111,6 @@ class Command(ScrapyCommand):
         if opts.email and log_size_init < log_size_end:
             send_email(self.email_from, self.email_to)
 
-        # create new frontend file
-        if opts.frontend:
-            filename = settings.get('FRONTEND_FILE') + '-' + str(datetime.now()).replace(' ', '-')
-            cursor = db.get_current_week_lunches_mongodb()
-            print(str(cursor.count()) + ' item(s) exported to frontend.')
-            db.print_cursor_to_javascript_file(cursor, filename, True)
-            call(['cp', filename, settings.get('FRONTEND_FILE')])
-
         # deploy into production
         if opts.deploy and db_items_end > db_items_init:
             deploy_in_production()
@@ -121,6 +127,9 @@ class Command(ScrapyCommand):
         if opts.import_collection:
             print("Importing file %s into collection lunch." % opts.import_collection)
             db.import_lunches(opts.import_collection)
+            return
+        if opts.frontend:
+            create_frontend_files()
             return
         if opts.backup:
             db.export_lunches()
