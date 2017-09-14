@@ -11,9 +11,28 @@ from mahlzeit.date_utils import get_current_day_week_number
 from mahlzeit.date_utils import is_weekend
 from mahlzeit.date_utils import get_monday_date
 
+COORDINATES = {
+    'Albert': [(52.431487, 13.536813)],
+    'Cafe Campus': [(52.435699, 13.529591)],
+    'Esswirtschaft': [(52.431405, 13.532730), (52.427510, 13.545404), (52.499909, 13.454978)],
+    'La Petite': [(52.429979, 13.541673)],
+    'Sonnenschein': [(52.429812, 13.537330)],
+    'Suppencult': [(52.535917, 13.422788)],
+    'Die Loeffelei': [(52.502667, 13.365823)],
+    'Joseph Rot Diele': [(52.502589, 13.365569)]
+}
 connection = pymongo.MongoClient(settings['MONGODB_SERVER'], settings['MONGODB_PORT'])
 database = connection[settings['MONGODB_DB']]
 collection = database[settings['MONGODB_COLLECTION']]
+
+
+def print_coordinates(dst):
+    obj = dumps(COORDINATES)
+    with open(dst, "w") as fp:
+        fp.write('const coordinatesAux = \'')
+        fp.write(obj)
+        fp.write('\';\nconst coordinates = JSON.parse(coordinatesAux);\n')
+        fp.write('export default products;\n')
 
 
 def print_cursor_to_javascript_file(cursor, dst, variable=False):
