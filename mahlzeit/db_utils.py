@@ -133,7 +133,7 @@ def import_lunches(filename):
 
 def drop_collection():
     export_lunches()
-    command = "db." + settings['MONGODB_DB'] + ".drop()"
+    command = "db." + settings['MONGODB_COLLECTION'] + ".drop()"
     print("[COOL] Executing command: \n[COOL] %s" % command)
     call(["mongo", settings['MONGODB_DB'], "--eval", command])
 
