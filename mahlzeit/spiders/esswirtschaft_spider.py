@@ -31,28 +31,40 @@ class EWSpider(scrapy.Spider):
     def parse(self, response):
         result = list()
         monday = get_date_of_weekday('monday')
+
         # wochengericht
         wochengericht = response.selector.xpath('//h2[1]//following-sibling::p[1]//text()').extract_first()
         wochengericht, ingredients = extract_ingredients(wochengericht)
         result.extend(create_dish_for_week(self.location, self.business, wochengericht, monday, ingredients))
+
         # wochensalat
         wochensalat = response.selector.xpath('//h2[2]//following-sibling::p[1]//text()').extract_first()
         wochensalat, ingredients = extract_ingredients(wochensalat)
         result.extend(create_dish_for_week(self.location, self.business, wochensalat, monday, ingredients))
+
         # salat im Glas
         salat_im_glas = response.selector.xpath('//h2[3]//following-sibling::p[1]//text()').extract_first()
         salat_im_glas, ingredients = extract_ingredients(salat_im_glas)
         result.extend(create_dish_for_week(self.location, self.business, salat_im_glas, monday, ingredients))
+
         # wochensuppen
         wochensuppe1 = response.selector.xpath('//h3//following-sibling::p[1]')[1].extract()[3:-4]
-        wochensuppe1, ingredients = extract_ingredients(wochensuppe1)
         wochensuppe2 = response.selector.xpath('//h3//following-sibling::p[2]//text()').extract_first()
-        wochensuppe2, ingredients = extract_ingredients(wochensuppe2)
         wochensuppe3 = response.selector.xpath('//h3//following-sibling::p[3]//text()').extract_first()
-        wochensuppe3, ingredients = extract_ingredients(wochensuppe3)
-        result.extend(create_dish_for_week(self.location, self.business, wochensuppe1, monday, ingredients))
-        result.extend(create_dish_for_week(self.location, self.business, wochensuppe2, monday, ingredients))
-        result.extend(create_dish_for_week(self.location, self.business, wochensuppe3, monday, ingredients))
+        if '<br>' in wochensuppe1:
+            for line in wochensuppe1.split('<br>\n'):
+                if len(line) > 1:
+                    soup, ingredients = extract_ingredients(line)
+                    result.extend(create_dish_for_week(self.location, self.business, soup, monday, ingredients))
+        else:
+            wochensuppe1, ingredients = extract_ingredients(wochensuppe1)
+            result.extend(create_dish_for_week(self.location, self.business, wochensuppe1, monday, ingredients))
+        if wochensuppe2:
+            wochensuppe2, ingredients = extract_ingredients(wochensuppe2)
+            result.extend(create_dish_for_week(self.location, self.business, wochensuppe2, monday, ingredients))
+        if wochensuppe3:
+            wochensuppe3, ingredients = extract_ingredients(wochensuppe3)
+            result.extend(create_dish_for_week(self.location, self.business, wochensuppe3, monday, ingredients))
 
         # montag
         monday = response.selector.xpath('//h2[4]//following-sibling::p[1]//text()').extract_first()
