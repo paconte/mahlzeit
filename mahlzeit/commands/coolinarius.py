@@ -36,7 +36,7 @@ process = CrawlerProcess(settings)
 log_file = settings.get('LOG_FILE')
 spider_list = [
     # spiders for Adlershof
-    'albert', 'esswirtschaft', 'jouisnour', 'sonnenschein', 'lapetite', 'cafecampus',
+    'albert', 'esswirtschaft', 'jouisnour', 'sonnenschein', 'lapetite', #'cafecampus',
     # spiders for Alex
     'suppencult']
 

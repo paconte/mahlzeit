@@ -1,9 +1,10 @@
 import scrapy
 import re
-from mahlzeit.date_utils import download_and_convert_to_text
+from mahlzeit.date_utils import download_and_convert_to_text, get_date
 from mahlzeit.date_utils import create_filename_week
 from mahlzeit.date_utils import create_dish_for_week
 from mahlzeit.date_utils import get_date_of_weekday
+from mahlzeit.items import MenuItem
 
 
 def clean_price(line):
@@ -24,8 +25,10 @@ def download_and_parse(link, name, location, business, date):
         price = re.compile(r'^[0-9].*€')
         prices = list()
         dishes = list()
+        days = list()
         start = False
         dish = ""
+        week_days = ['montag\n', 'dienstag\n', 'mittwoch\n', 'donnerstag\n', 'freitag\n']
         for line in text:
             if not start and beginning.match(line):
                 start = True
@@ -35,10 +38,20 @@ def download_and_parse(link, name, location, business, date):
                         prices.append(clean_price(line))
                         dishes.append(dish)
                         dish = ""
+                    elif line.lower() in week_days:
+                        day = line[:-1]
+                        days.append(day)
                     else:
                         dish += clean_dish(line)
-        for d, p in zip(dishes, prices):
-            items.extend(create_dish_for_week(location, business, d, date, list(), p))
+                        if len(dish) > len(days):
+                            days.append('all')
+        for dish, price, day in zip(dishes, prices, days):
+            if day != 'all':
+                item = MenuItem(location=location, business=business, dish=dish, date=get_date(date, day),
+                                ingredients=list(), price=price)
+                items.append(item)
+            else:
+                items.extend(create_dish_for_week(location, business, dish, date, list(), price))
     return items
 
 

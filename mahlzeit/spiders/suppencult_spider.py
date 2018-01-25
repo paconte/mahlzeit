@@ -48,7 +48,10 @@ class SuppenCultSpider(scrapy.Spider):
                 idxs.append(i)
             elif 'Unsere vegetarischen Suppen'.lower() in dishes[i].lower():
                 idxs.append(i)
-            elif 'geschlossen' in dishes[i]:
+            elif 'geschlossen' in dishes[i].lower():
+                idxs.append(i)
+            elif 'privatfeiern' in dishes[i].lower() or 'firmen' in dishes[i].lower() \
+                    or 'feiertag' in dishes[i].lower():
                 idxs.append(i)
         delete_idexes(dishes, idxs)
         # delete invalid titles
@@ -56,9 +59,17 @@ class SuppenCultSpider(scrapy.Spider):
         for i in range(len(names)):
             if 'schließzeiten' in names[i].lower():
                 idxs.append(i)
+            elif 'öffnungszeiten' in names[i].lower():
+                idxs.append(i)
+            elif 'catering' in names[i].lower():
+                idxs.append(i)
         delete_idexes(names, idxs)
 
         if len(names) != len(dishes) or len(names) != len(prices):
+            print(len(names), len(dishes), len(prices))
+            print(names)
+            print(dishes)
+            print(prices)
             raise KeyError('prices and dishes have different length')
 
         result = list()

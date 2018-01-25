@@ -1,1 +1,134 @@
 
+2017-10-09 09:00:03 [scrapy.core.scraper] ERROR: Spider error processing <GET http://suppen-cult.de/index.php?page=8> (referer: None)
+Traceback (most recent call last):
+  File "/home/frevilla/.local/lib/python3.5/site-packages/twisted/internet/defer.py", line 653, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/frevilla/devel/scrapy/mahlzeit/mahlzeit/spiders/suppencult_spider.py", line 66, in parse
+    raise KeyError('prices and dishes have different length')
+KeyError: 'prices and dishes have different length'
+2017-10-09 09:21:48 [scrapy.core.scraper] ERROR: Spider error processing <GET http://suppen-cult.de/index.php?page=8> (referer: None)
+Traceback (most recent call last):
+  File "/home/frevilla/.local/lib/python3.5/site-packages/twisted/internet/defer.py", line 653, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/frevilla/devel/scrapy/mahlzeit/mahlzeit/spiders/suppencult_spider.py", line 66, in parse
+    raise KeyError('prices and dishes have different length')
+KeyError: 'prices and dishes have different length'
+2017-10-09 09:32:07 [scrapy.core.scraper] ERROR: Spider error processing <GET http://suppen-cult.de/index.php?page=8> (referer: None)
+Traceback (most recent call last):
+  File "/home/frevilla/.local/lib/python3.5/site-packages/twisted/internet/defer.py", line 653, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/frevilla/devel/scrapy/mahlzeit/mahlzeit/spiders/suppencult_spider.py", line 72, in parse
+    raise KeyError('prices and dishes have different length')
+KeyError: 'prices and dishes have different length'
+2017-11-06 11:51:03 [scrapy.core.scraper] ERROR: Spider error processing <GET http://suppen-cult.de/index.php?page=8> (referer: None)
+Traceback (most recent call last):
+  File "/home/frevilla/.local/lib/python3.5/site-packages/twisted/internet/defer.py", line 653, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/suppencult_spider.py", line 73, in parse
+    raise KeyError('prices and dishes have different length')
+KeyError: 'prices and dishes have different length'
+2017-11-06 11:58:03 [scrapy.core.scraper] ERROR: Spider error processing <GET http://suppen-cult.de/index.php?page=8> (referer: None)
+Traceback (most recent call last):
+  File "/home/frevilla/.local/lib/python3.5/site-packages/twisted/internet/defer.py", line 653, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/suppencult_spider.py", line 73, in parse
+    raise KeyError('prices and dishes have different length')
+KeyError: 'prices and dishes have different length'
+2017-11-06 12:03:02 [scrapy.core.scraper] ERROR: Spider error processing <GET http://suppen-cult.de/index.php?page=8> (referer: None)
+Traceback (most recent call last):
+  File "/home/frevilla/.local/lib/python3.5/site-packages/twisted/internet/defer.py", line 653, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/suppencult_spider.py", line 73, in parse
+    raise KeyError('prices and dishes have different length')
+KeyError: 'prices and dishes have different length'
+2017-11-06 12:06:19 [scrapy.core.scraper] ERROR: Spider error processing <GET http://suppen-cult.de/index.php?page=8> (referer: None)
+Traceback (most recent call last):
+  File "/home/frevilla/.local/lib/python3.5/site-packages/twisted/internet/defer.py", line 653, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/suppencult_spider.py", line 73, in parse
+    raise KeyError('prices and dishes have different length')
+KeyError: 'prices and dishes have different length'
+2017-11-06 12:09:03 [scrapy.core.scraper] ERROR: Spider error processing <GET http://suppen-cult.de/index.php?page=8> (referer: None)
+Traceback (most recent call last):
+  File "/home/frevilla/.local/lib/python3.5/site-packages/twisted/internet/defer.py", line 653, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/suppencult_spider.py", line 73, in parse
+    raise KeyError('prices and dishes have different length')
+KeyError: 'prices and dishes have different length'
+2017-11-06 12:13:04 [scrapy.core.scraper] ERROR: Spider error processing <GET http://suppen-cult.de/index.php?page=8> (referer: None)
+Traceback (most recent call last):
+  File "/home/frevilla/.local/lib/python3.5/site-packages/twisted/internet/defer.py", line 653, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/suppencult_spider.py", line 73, in parse
+    raise KeyError('prices and dishes have different length')
+KeyError: 'prices and dishes have different length'
+2017-11-06 23:00:03 [scrapy.core.scraper] ERROR: Spider error processing <GET http://suppen-cult.de/index.php?page=8> (referer: None)
+Traceback (most recent call last):
+  File "/home/frevilla/.local/lib/python3.5/site-packages/twisted/internet/defer.py", line 653, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/suppencult_spider.py", line 73, in parse
+    raise KeyError('prices and dishes have different length')
+KeyError: 'prices and dishes have different length'
+2017-11-20 09:00:03 [scrapy.core.scraper] ERROR: Spider error processing <GET http://www.adlershof.de/fileadmin/user_upload/downloads/essen/sonnenschein.pdf> (referer: None)
+Traceback (most recent call last):
+  File "/home/frevilla/.local/lib/python3.5/site-packages/twisted/internet/defer.py", line 653, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/sonnenschein_spider.py", line 106, in parse
+    items += parse_weekday(self.location, self.business, text, idx1, idx2, days[i][:-1])
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/sonnenschein_spider.py", line 76, in parse_weekday
+    raise KeyError('prices and dishes have different length')
+KeyError: 'prices and dishes have different length'
+2017-11-20 12:09:03 [scrapy.core.scraper] ERROR: Spider error processing <GET http://www.adlershof.de/fileadmin/user_upload/downloads/essen/sonnenschein.pdf> (referer: None)
+Traceback (most recent call last):
+  File "/home/frevilla/.local/lib/python3.5/site-packages/twisted/internet/defer.py", line 653, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/sonnenschein_spider.py", line 106, in parse
+    items += parse_weekday(self.location, self.business, text, idx1, idx2, days[i][:-1])
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/sonnenschein_spider.py", line 76, in parse_weekday
+    raise KeyError('prices and dishes have different length')
+KeyError: 'prices and dishes have different length'
+2017-11-20 23:00:03 [scrapy.core.scraper] ERROR: Spider error processing <GET http://www.adlershof.de/fileadmin/user_upload/downloads/essen/sonnenschein.pdf> (referer: None)
+Traceback (most recent call last):
+  File "/home/frevilla/.local/lib/python3.5/site-packages/twisted/internet/defer.py", line 653, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/sonnenschein_spider.py", line 106, in parse
+    items += parse_weekday(self.location, self.business, text, idx1, idx2, days[i][:-1])
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/sonnenschein_spider.py", line 76, in parse_weekday
+    raise KeyError('prices and dishes have different length')
+KeyError: 'prices and dishes have different length'
+2017-11-27 09:00:02 [scrapy.core.scraper] ERROR: Spider error processing <GET http://www.adlershof.de/fileadmin/user_upload/downloads/essen/sonnenschein.pdf> (referer: None)
+Traceback (most recent call last):
+  File "/home/frevilla/.local/lib/python3.5/site-packages/twisted/internet/defer.py", line 653, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/sonnenschein_spider.py", line 106, in parse
+    items += parse_weekday(self.location, self.business, text, idx1, idx2, days[i][:-1])
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/sonnenschein_spider.py", line 76, in parse_weekday
+    raise KeyError('prices and dishes have different length')
+KeyError: 'prices and dishes have different length'
+2017-11-27 12:09:02 [scrapy.core.scraper] ERROR: Spider error processing <GET http://www.adlershof.de/fileadmin/user_upload/downloads/essen/sonnenschein.pdf> (referer: None)
+Traceback (most recent call last):
+  File "/home/frevilla/.local/lib/python3.5/site-packages/twisted/internet/defer.py", line 653, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/sonnenschein_spider.py", line 106, in parse
+    items += parse_weekday(self.location, self.business, text, idx1, idx2, days[i][:-1])
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/sonnenschein_spider.py", line 76, in parse_weekday
+    raise KeyError('prices and dishes have different length')
+KeyError: 'prices and dishes have different length'
+2017-11-27 23:00:03 [scrapy.core.scraper] ERROR: Spider error processing <GET http://www.adlershof.de/fileadmin/user_upload/downloads/essen/sonnenschein.pdf> (referer: None)
+Traceback (most recent call last):
+  File "/home/frevilla/.local/lib/python3.5/site-packages/twisted/internet/defer.py", line 653, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/sonnenschein_spider.py", line 106, in parse
+    items += parse_weekday(self.location, self.business, text, idx1, idx2, days[i][:-1])
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/sonnenschein_spider.py", line 76, in parse_weekday
+    raise KeyError('prices and dishes have different length')
+KeyError: 'prices and dishes have different length'
+2017-12-04 09:00:03 [scrapy.core.scraper] ERROR: Spider error processing <GET http://www.adlershof.de/fileadmin/user_upload/downloads/essen/sonnenschein.pdf> (referer: None)
+Traceback (most recent call last):
+  File "/home/frevilla/.local/lib/python3.5/site-packages/twisted/internet/defer.py", line 653, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/sonnenschein_spider.py", line 106, in parse
+    items += parse_weekday(self.location, self.business, text, idx1, idx2, days[i][:-1])
+  File "/home/frevilla/devel/github/mahlzeit/mahlzeit/spiders/sonnenschein_spider.py", line 76, in parse_weekday
+    raise KeyError('prices and dishes have different length')
+KeyError: 'prices and dishes have different length'

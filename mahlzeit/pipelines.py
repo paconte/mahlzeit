@@ -22,6 +22,8 @@ def get_filename():
 
 
 def clean_item_dish(dish):
+    if not dish or len(dish) == 0:
+        return dish
     result = dish.replace('\"', '')
     result = dish.replace('"', '')
     result = result.replace('"', '')
